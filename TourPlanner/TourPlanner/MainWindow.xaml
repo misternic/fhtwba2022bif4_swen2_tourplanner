@@ -6,7 +6,30 @@
         xmlns:local="clr-namespace:TourPlanner"
         mc:Ignorable="d"
         Title="Tour-Planner" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="File">
+                <MenuItem Header="_New" />
+                <MenuItem Header="_Open" />
+                <MenuItem Header="_Save" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+            </MenuItem>
+            <MenuItem Header="Options">
+            </MenuItem>
+            <MenuItem Header="Help" HorizontalAlignment="Right">
+                <MenuItem Header="About"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Label Content="Content here" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" />
+        </Grid>
+    </DockPanel>
 </Window>
