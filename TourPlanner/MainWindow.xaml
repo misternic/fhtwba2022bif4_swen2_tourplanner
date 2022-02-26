@@ -28,8 +28,29 @@
                 <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <Grid>
-            <Label Content="Content here" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" />
-        </Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Button DockPanel.Dock="Right" Width="100" Margin="2,2,2,2">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/images/magnify.png" Width="18" Height="18" />
+
+                        <TextBlock>Search</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <TextBox Margin="2,2,2,2" VerticalContentAlignment="Center"></TextBox>
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" MinWidth="100"></ColumnDefinition>
+                    <ColumnDefinition Width="5"></ColumnDefinition>
+                    <ColumnDefinition Width="200*" MinWidth="200"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Content="Sidebar" Background="#FFFF9898"/>
+                <GridSplitter Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
+                <Label Grid.Row="0" Grid.Column="2" Content="Content" Background="#FFC7FFBF"/>
+            </Grid>
+        </DockPanel>
     </DockPanel>
 </Window>

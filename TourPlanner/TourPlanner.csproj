@@ -7,4 +7,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="images\magnify.png" />
+  </ItemGroup>
+
 </Project>
