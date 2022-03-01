@@ -8,7 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\close-box.png" />
+    <None Remove="images\pencil.png" />
+    <None Remove="images\plus-box.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\close-box.png" />
     <Resource Include="images\magnify.png" />
+    <Resource Include="images\pencil.png" />
+    <Resource Include="images\plus-box.png" />
   </ItemGroup>
 
 </Project>
