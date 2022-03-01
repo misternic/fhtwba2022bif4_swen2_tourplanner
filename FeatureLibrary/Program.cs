@@ -23,9 +23,10 @@ namespace FeatureLibrary
             };
             
             var distance = await TourManager.GetRouteDistance(from, to);
-            Console.WriteLine(distance);
+            Console.WriteLine($"Distance between \"{from.ToString()}\" and \"{to.ToString()}\": {distance}km");
 
-            await TourManager.GetRouteImage(from, to);
+            var success = await TourManager.GetRouteImage("sample_tour", from, to);
+            Console.WriteLine($"Image of tour saved successfully: {success}");
         }
     }
 }

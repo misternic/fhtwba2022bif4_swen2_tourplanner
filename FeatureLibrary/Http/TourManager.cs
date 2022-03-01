@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace FeatureLibrary.Http
             }
         }
 
-        public static async Task GetRouteImage(Address from, Address to)
+        public static async Task<bool> GetRouteImage(string filename, Address from, Address to)
         {
             try
             {
@@ -59,11 +60,21 @@ namespace FeatureLibrary.Http
                 var uri = $"https://www.mapquestapi.com/staticmap/v5/map?{query}";
                 var response = await Client.GetAsync(uri);
 
-                Console.WriteLine(response.IsSuccessStatusCode);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+
+                File.WriteAllBytes(
+                    $"{AppSettings.Root["PersistenceFolder"]}/{filename}.jpg",
+                    await response.Content.ReadAsByteArrayAsync());
+
+                return true;
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return false;
             }
         }
     }
