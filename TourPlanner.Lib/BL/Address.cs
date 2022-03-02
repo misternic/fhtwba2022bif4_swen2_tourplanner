@@ -1,4 +1,4 @@
-namespace TourPlanner.Lib.Http
+namespace TourPlanner.Lib.BL
 {
     public class Address
     {

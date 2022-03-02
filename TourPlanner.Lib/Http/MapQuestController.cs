@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using TourPlanner.Lib.BL;
 
 namespace TourPlanner.Lib.Http
 {
@@ -12,8 +13,14 @@ namespace TourPlanner.Lib.Http
     {
         private static readonly HttpClient Client = new HttpClient();
         private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
+        private static readonly Dictionary<TransportType, string> RouteTypes = new Dictionary<TransportType, string>()
+        {
+            {TransportType.Car, "fastest"},
+            {TransportType.Bicycle, "bicycle"},
+            {TransportType.Walking, "pedestrian"}
+        };
         
-        public static async Task<double> GetRouteDistance(Address from, Address to)
+        public static async Task<MapQuestRouteDto> GetRouteMetaData(Address from, Address to, TransportType type)
         {
             try
             {
@@ -23,7 +30,8 @@ namespace TourPlanner.Lib.Http
                         {"from", from.ToString()},
                         {"to", to.ToString()},
                         {"unit", "k"},
-                        {"locale", "de_DE"}
+                        {"locale", "de_DE"},
+                        {"routeType", RouteTypes[type]}
                     }
                     .Select(param => $"{param.Key}={param.Value}");
                 
@@ -32,16 +40,16 @@ namespace TourPlanner.Lib.Http
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return -1.0;
+                    return null;
                 }
                 
                 var route = await response.Content.ReadAsAsync<MapQuestRouteResultDto>();
-                return route.Route.Distance;
+                return route.Route;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return -1.0;
+                return null;
             }
         }
 
@@ -53,7 +61,9 @@ namespace TourPlanner.Lib.Http
                     {
                         {"key", Config["MapQuestApiKey"]},
                         {"start", $"{from.ToString()}|flag-start"},
-                        {"end", $"{to.ToString()}|flag-end"}
+                        {"end", $"{to.ToString()}|flag-end"},
+                        {"size", "@2x"},
+                        // TODO: find better zoom value (maybe dynamic from distance of route?)   
                     }
                     .Select(param => $"{param.Key}={param.Value}");
                 
