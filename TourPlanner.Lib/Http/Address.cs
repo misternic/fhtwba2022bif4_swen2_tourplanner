@@ -1,4 +1,4 @@
-namespace FeatureLibrary.Http
+namespace TourPlanner.Lib.Http
 {
     public class Address
     {

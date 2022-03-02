@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FeatureLibrary.Http
+namespace TourPlanner.Lib.Http
 {
-    public static class TourManager
+    public static class MapQuestController
     {
         private static readonly HttpClient Client = new HttpClient();
         private static readonly AppSettings AppSettings = AppSettings.GetInstance();
@@ -25,22 +25,22 @@ namespace FeatureLibrary.Http
                     {"locale", "de_DE"}
                 };
 
-                var query = string.Join("&", parameters.Select(param => $"{param.Key}={param.Value}"));
+                var q = string.Join("&", parameters.Select(param => $"{param.Key}={param.Value}"));
 
-                var uri = $"https://www.mapquestapi.com/directions/v2/route?{query}";
+                var uri = $"https://www.mapquestapi.com/directions/v2/route?{q}";
                 var response = await Client.GetAsync(uri);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return -1;
+                    return -1.0;
                 }
                 
-                var route = await response.Content.ReadAsAsync<RouteResultDto>();
+                var route = await response.Content.ReadAsAsync<MapQuestRouteResultDto>();
                 return route.Route.Distance;
             }
             catch (HttpRequestException e)
             {
-                return -1;
+                return -1.0;
             }
         }
 
@@ -55,9 +55,9 @@ namespace FeatureLibrary.Http
                     {"end", $"{to.ToString()}|flag-end"}
                 };
 
-                var query = string.Join("&", parameters.Select(param => $"{param.Key}={param.Value}"));
+                var q = string.Join("&", parameters.Select(param => $"{param.Key}={param.Value}"));
 
-                var uri = $"https://www.mapquestapi.com/staticmap/v5/map?{query}";
+                var uri = $"https://www.mapquestapi.com/staticmap/v5/map?{q}";
                 var response = await Client.GetAsync(uri);
 
                 if (!response.IsSuccessStatusCode)

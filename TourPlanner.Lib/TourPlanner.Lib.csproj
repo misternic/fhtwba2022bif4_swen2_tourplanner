@@ -7,8 +7,8 @@
         <ProjectGuid>{70741C93-DCB4-4576-8928-A3238D1B8A48}</ProjectGuid>
         <OutputType>Exe</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>FeatureLibrary</RootNamespace>
-        <AssemblyName>FeatureLibrary</AssemblyName>
+        <RootNamespace>TourPlanner.Lib</RootNamespace>
+        <AssemblyName>TourPlanner.Lib</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>8</LangVersion>
@@ -121,8 +121,8 @@
     <ItemGroup>
         <Compile Include="AppSettings.cs" />
         <Compile Include="Http\Address.cs" />
-        <Compile Include="Http\RouteDto.cs" />
-        <Compile Include="Http\TourManager.cs" />
+        <Compile Include="Http\MapQuestRouteDto.cs" />
+        <Compile Include="Http\MapQuestController.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

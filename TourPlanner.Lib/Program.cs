@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FeatureLibrary.Http;
+using TourPlanner.Lib.Http;
 
-namespace FeatureLibrary
+namespace TourPlanner.Lib
 {
     internal class Program
     {
@@ -22,10 +22,10 @@ namespace FeatureLibrary
                 City = "Vienna"
             };
             
-            var distance = await TourManager.GetRouteDistance(from, to);
+            var distance = await MapQuestController.GetRouteDistance(from, to);
             Console.WriteLine($"Distance between \"{from.ToString()}\" and \"{to.ToString()}\": {distance}km");
 
-            var success = await TourManager.GetRouteImage("sample_tour", from, to);
+            var success = await MapQuestController.GetRouteImage("sample_tour", from, to);
             Console.WriteLine($"Image of tour saved successfully: {success}");
         }
     }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner", "TourPlanner\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.DAL", "TourPlanner.DAL\TourPlanner.DAL.csproj", "{F5B612A0-1FB9-44D6-BBB0-03335976E71A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureLibrary", "FeatureLibrary\FeatureLibrary.csproj", "{70741C93-DCB4-4576-8928-A3238D1B8A48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.Lib", "TourPlanner.Lib\TourPlanner.Lib.csproj", "{70741C93-DCB4-4576-8928-A3238D1B8A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
