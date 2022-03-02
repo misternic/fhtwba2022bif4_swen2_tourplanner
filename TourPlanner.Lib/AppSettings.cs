@@ -6,11 +6,11 @@ namespace TourPlanner.Lib
     public sealed class AppSettings
     {
         private static AppSettings _instance;
-        public IConfigurationRoot Root { get; }
+        public IConfigurationRoot Configuration { get; }
 
         private AppSettings()
         {
-            Root = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
