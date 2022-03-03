@@ -124,9 +124,9 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\TourPlanner.BL\TourPlanner.BL.csproj">
-        <Project>{b269cc24-0825-4646-bf59-445750b857f7}</Project>
-        <Name>TourPlanner.BL</Name>
+      <ProjectReference Include="..\TourPlanner.Common\TourPlanner.Common.csproj">
+        <Project>{22811211-80b5-45b2-8d80-507fd1dabfb6}</Project>
+        <Name>TourPlanner.Common</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

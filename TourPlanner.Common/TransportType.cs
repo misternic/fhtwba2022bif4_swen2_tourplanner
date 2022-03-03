@@ -1,4 +1,4 @@
-namespace TourPlanner.BL
+namespace TourPlanner.Common
 {
     public enum TransportType
     {

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Configuration;
 
-namespace TourPlanner.BL
+namespace TourPlanner.Common
 {
     public sealed class AppSettings
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using TourPlanner.BL;
+using TourPlanner.Common;
 
 namespace TourPlanner.DAL.MapQuest
 {

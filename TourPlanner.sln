@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.Console", "Tour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.Tests", "TourPlanner.Tests\TourPlanner.Tests.csproj", "{DC84AF7B-CDF2-4584-90D1-28328839EB69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.Common", "TourPlanner.Common\TourPlanner.Common.csproj", "{22811211-80B5-45B2-8D80-507FD1DABFB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DC84AF7B-CDF2-4584-90D1-28328839EB69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC84AF7B-CDF2-4584-90D1-28328839EB69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC84AF7B-CDF2-4584-90D1-28328839EB69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22811211-80B5-45B2-8D80-507FD1DABFB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22811211-80B5-45B2-8D80-507FD1DABFB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22811211-80B5-45B2-8D80-507FD1DABFB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22811211-80B5-45B2-8D80-507FD1DABFB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using TourPlanner.BL;
+using TourPlanner.Common;
 using TourPlanner.DAL.MapQuest;
 
 namespace TourPlanner.Console

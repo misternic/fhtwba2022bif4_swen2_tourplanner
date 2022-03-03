@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace TourPlanner.BL
+namespace TourPlanner.Common
 {
     public class Tour
     {
