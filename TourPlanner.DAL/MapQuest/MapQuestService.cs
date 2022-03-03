@@ -5,15 +5,15 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using TourPlanner.Lib.BL;
+using TourPlanner.BL;
 
-namespace TourPlanner.Lib.Http
+namespace TourPlanner.DAL.MapQuest
 {
-    public static class MapQuestController
+    public static class MapQuestService
     {
-        private static readonly HttpClient Client = new HttpClient();
+        private static readonly HttpClient Client = new();
         private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
-        private static readonly Dictionary<TransportType, string> RouteTypes = new Dictionary<TransportType, string>()
+        private static readonly Dictionary<TransportType, string> RouteTypes = new()
         {
             {TransportType.Car, "fastest"},
             {TransportType.Bicycle, "bicycle"},

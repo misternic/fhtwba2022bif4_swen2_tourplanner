@@ -1,4 +1,4 @@
-namespace TourPlanner.Lib.BL
+namespace TourPlanner.BL
 {
     public enum TransportType
     {

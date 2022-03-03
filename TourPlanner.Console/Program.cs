@@ -2,24 +2,23 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using TourPlanner.Lib.BL;
-using TourPlanner.Lib.Http;
+using TourPlanner.BL;
+using TourPlanner.DAL.MapQuest;
 
-namespace TourPlanner.Lib
+namespace TourPlanner.Console
 {
     internal class Program
     {
         private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
         
-        private static readonly Address From = new Address()
+        private static readonly Address From = new()
         {
             Road = "Höchstädtplatz",
             Number = "6",
             City = "Vienna"
         };
         
-        private static readonly Address To = new Address()
+        private static readonly Address To = new()
         {
             Road = "Schwedenplatz",
             Number = "",
@@ -39,13 +38,13 @@ namespace TourPlanner.Lib
                 TransportType = TransportType.Bicycle
             };
             
-            var metaData = await MapQuestController.GetRouteMetaData(From, To, tour.TransportType);
-            await MapQuestController.GetRouteImage(id.ToString(), From, To);
-
+            var metaData = await MapQuestService.GetRouteMetaData(From, To, tour.TransportType);
+            await MapQuestService.GetRouteImage(id.ToString(), From, To);
+            
             tour.Distance = metaData.Distance;
             tour.EstimatedTime = metaData.FormattedTime;
             
-            File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", JsonConvert.SerializeObject(tour));
+            File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
         }
     }
 }

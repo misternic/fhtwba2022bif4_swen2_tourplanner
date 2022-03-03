@@ -1,11 +1,11 @@
 using System;
 using Microsoft.Extensions.Configuration;
 
-namespace TourPlanner.Lib
+namespace TourPlanner.BL
 {
     public sealed class AppSettings
     {
-        private static AppSettings _instance;
+        private static AppSettings? _instance;
         public IConfigurationRoot Configuration { get; }
 
         private AppSettings()

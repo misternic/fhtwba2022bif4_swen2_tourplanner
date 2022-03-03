@@ -1,6 +1,6 @@
 using System;
 
-namespace TourPlanner.Lib.Http
+namespace TourPlanner.DAL.MapQuest
 {
     public class MapQuestRouteResultDto
     {

@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace TourPlanner.Lib.BL
+namespace TourPlanner.BL
 {
     public class Tour
     {
@@ -22,5 +22,10 @@ namespace TourPlanner.Lib.BL
         public double Distance { get; set; }
         
         public TimeSpan EstimatedTime { get; set; }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

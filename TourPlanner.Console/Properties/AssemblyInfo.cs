@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TourPlanner.Lib")]
+[assembly: AssemblyTitle("TourPlanner.Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TourPlanner.Lib")]
+[assembly: AssemblyProduct("TourPlanner.Console")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("70741C93-DCB4-4576-8928-A3238D1B8A48")]
+[assembly: Guid("4F8B51E2-2103-46FA-A0D8-80B141D8FB3C")]
 
 // Version information for an assembly consists of the following four values:
 //
