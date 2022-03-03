@@ -20,7 +20,7 @@ namespace TourPlanner.DAL.MapQuest
             {TransportType.Walking, "pedestrian"}
         };
         
-        public static async Task<MapQuestRouteDto> GetRouteMetaData(Address from, Address to, TransportType type)
+        public static async Task<MapQuestRouteDto?> GetRouteMetaData(Address from, Address to, TransportType type)
         {
             try
             {
