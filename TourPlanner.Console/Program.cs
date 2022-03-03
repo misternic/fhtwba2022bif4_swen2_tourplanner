@@ -41,8 +41,8 @@ namespace TourPlanner.Console
             var metaData = await MapQuestService.GetRouteMetaData(From, To, tour.TransportType);
             await MapQuestService.GetRouteImage(id.ToString(), From, To);
             
-            tour.Distance = metaData.Distance;
-            tour.EstimatedTime = metaData.FormattedTime;
+            tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+            tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
             
             File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
         }
