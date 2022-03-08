@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TourPlanner" xmlns:viewmodels="clr-namespace:TourPlanner.Views"
+        xmlns:local="clr-namespace:TourPlanner.ViewModels" xmlns:Views="clr-namespace:TourPlanner.Views"
         mc:Ignorable="d"
         Title="Tour-Planner" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <Menu.ItemsPanel>
@@ -13,22 +16,23 @@
                     <DockPanel HorizontalAlignment="Stretch"/>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="File">
+            <!-- underline in Header is key shortcut -->
+            <MenuItem Header="_File">
                 <MenuItem Header="_New" />
                 <MenuItem Header="_Open" />
                 <MenuItem Header="_Save" />
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
-            <MenuItem Header="Edit">
+            <MenuItem Header="_Edit">
             </MenuItem>
-            <MenuItem Header="Options">
+            <MenuItem Header="_Options">
             </MenuItem>
-            <MenuItem Header="Help" HorizontalAlignment="Right">
-                <MenuItem Header="About"/>
+            <MenuItem Header="_Help" HorizontalAlignment="Right">
+                <MenuItem Header="_About"/>
             </MenuItem>
         </Menu>
-        <viewmodels:SearchBar DockPanel.Dock="Top" />
+        <Views:SearchBar DockPanel.Dock="Top" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" MinWidth="100"></ColumnDefinition>
@@ -50,11 +54,9 @@
                     </StackPanel>
                     <Label Content="Tours" FontWeight="Bold" />
                 </DockPanel>
-                <ListBox>
-                    <ListBoxItem>Tour 1</ListBoxItem>
-                    <ListBoxItem>Tour 2</ListBoxItem>
-                    <ListBoxItem>Tour 3</ListBoxItem>
-                </ListBox>
+                <ListBox x:Name="tourItems"
+                         ItemsSource="{Binding Tours}"
+                         DisplayMemberPath="Name" />
             </DockPanel>
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
             <Label Grid.Row="0" Grid.Column="2" Content="Tours" />

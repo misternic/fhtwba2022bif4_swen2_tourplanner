@@ -13,10 +13,7 @@ namespace TourPlanner.ViewModels
     {
         public string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get => _searchText;
             set
             {
                 Debug.Print(value);
@@ -37,6 +34,9 @@ namespace TourPlanner.ViewModels
             {
                 this.SearchEvent?.Invoke(this, SearchText);
                 Debug.Print("Search Button clicked!");
+            }, (_) =>
+            {
+                return SearchText.Length > 0;
             });
         }
     }

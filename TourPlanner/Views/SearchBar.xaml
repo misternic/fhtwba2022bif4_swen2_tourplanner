@@ -18,6 +18,6 @@
             </StackPanel>
         </Button>
 
-        <TextBox Margin="2,2,2,2" VerticalContentAlignment="Center" Text="{Binding SearchText}"></TextBox>
+        <TextBox Margin="2,2,2,2" VerticalContentAlignment="Center" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
     </DockPanel>
 </UserControl>
