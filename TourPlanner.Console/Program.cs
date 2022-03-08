@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,7 @@ namespace TourPlanner.Console
             City = "Vienna"
         };
         
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var id = Guid.NewGuid();
             var tour = new Tour()
@@ -38,13 +39,17 @@ namespace TourPlanner.Console
                 TransportType = TransportType.Bicycle
             };
             
-            var metaData = await MapQuestService.GetRouteMetaData(From, To, tour.TransportType);
-            await MapQuestService.GetRouteImage(id.ToString(), From, To);
+            // var metaData = await MapQuestService.GetRouteMetaData(From, To, tour.TransportType);
+            // await MapQuestService.GetRouteImage(id.ToString(), From, To);
+            //
+            // tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+            // tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
+            //
+            // File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
+
+            var report = new TourReport(tour, new List<TourLog>());
             
-            tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
-            tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
-            
-            File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
+            report.ToPdf();
         }
     }
 }
