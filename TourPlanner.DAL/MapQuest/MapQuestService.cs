@@ -1,90 +1,83 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using TourPlanner.Common;
 
-namespace TourPlanner.DAL.MapQuest
-{
-    public static class MapQuestService
-    {
-        private static readonly HttpClient Client = new();
-        private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
-        private static readonly Dictionary<TransportType, string> RouteTypes = new()
-        {
-            {TransportType.Car, "fastest"},
-            {TransportType.Bicycle, "bicycle"},
-            {TransportType.Walking, "pedestrian"}
-        };
-        
-        public static async Task<MapQuestRouteDto?> GetRouteMetaData(Address from, Address to, TransportType type)
-        {
-            try
-            {
-                var parameters = new Dictionary<string, string>()
-                    {
-                        {"key", Config["MapQuestApiKey"]},
-                        {"from", from.ToString()},
-                        {"to", to.ToString()},
-                        {"unit", "k"},
-                        {"locale", "de_DE"},
-                        {"routeType", RouteTypes[type]}
-                    }
-                    .Select(param => $"{param.Key}={param.Value}");
-                
-                var uri = $"https://www.mapquestapi.com/directions/v2/route?{string.Join("&", parameters)}";
-                var response = await Client.GetAsync(uri);
+namespace TourPlanner.DAL.MapQuest;
 
-                if (!response.IsSuccessStatusCode)
+public static class MapQuestService
+{
+    private static readonly HttpClient Client = new();
+    private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
+    private static readonly Dictionary<TransportType, string> RouteTypes = new()
+    {
+        {TransportType.Car, "fastest"},
+        {TransportType.Bicycle, "bicycle"},
+        {TransportType.Walking, "pedestrian"}
+    };
+    
+    public static async Task<MapQuestRouteDto?> GetRouteMetaData(Address from, Address to, TransportType type)
+    {
+        try
+        {
+            var parameters = new Dictionary<string, string>()
                 {
-                    return null;
+                    {"key", Config["MapQuestApiKey"]},
+                    {"from", from.ToString()},
+                    {"to", to.ToString()},
+                    {"unit", "k"},
+                    {"locale", "de_DE"},
+                    {"routeType", RouteTypes[type]}
                 }
-                
-                var route = await response.Content.ReadAsAsync<MapQuestRouteResultDto>();
-                return route.Route;
-            }
-            catch (Exception e)
+                .Select(param => $"{param.Key}={param.Value}");
+            
+            var uri = $"https://www.mapquestapi.com/directions/v2/route?{string.Join("&", parameters)}";
+            var response = await Client.GetAsync(uri);
+
+            if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine(e.Message);
                 return null;
             }
+            
+            var route = await response.Content.ReadAsAsync<MapQuestRouteResultDto>();
+            return route.Route;
         }
-
-        public static async Task<bool> GetRouteImage(string filename, Address from, Address to)
+        catch (Exception e)
         {
-            try
-            {
-                var parameters = new Dictionary<string, string>()
-                    {
-                        {"key", Config["MapQuestApiKey"]},
-                        {"start", $"{from.ToString()}|flag-start"},
-                        {"end", $"{to.ToString()}|flag-end"},
-                        {"size", "@2x"},
-                        // TODO: find better zoom value (maybe dynamic from distance of route?)   
-                    }
-                    .Select(param => $"{param.Key}={param.Value}");
-                
-                var uri = $"https://www.mapquestapi.com/staticmap/v5/map?{string.Join("&", parameters)}";
-                var response = await Client.GetAsync(uri);
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
 
-                if (!response.IsSuccessStatusCode)
+    public static async Task<bool> GetRouteImage(string filename, Address from, Address to)
+    {
+        try
+        {
+            var parameters = new Dictionary<string, string>()
                 {
-                    return false;
+                    {"key", Config["MapQuestApiKey"]},
+                    {"start", $"{from.ToString()}|flag-start"},
+                    {"end", $"{to.ToString()}|flag-end"},
+                    {"size", "@2x"},
+                    // TODO: find better zoom value (maybe dynamic from distance of route?)   
                 }
+                .Select(param => $"{param.Key}={param.Value}");
+            
+            var uri = $"https://www.mapquestapi.com/staticmap/v5/map?{string.Join("&", parameters)}";
+            var response = await Client.GetAsync(uri);
 
-                var path = $"{Config["PersistenceFolder"]}/{filename}.jpg";
-                File.WriteAllBytes(path, await response.Content.ReadAsByteArrayAsync());
-
-                return true;
-            }
-            catch (Exception e)
+            if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine(e.Message);
                 return false;
             }
+
+            var path = $"{Config["PersistenceFolder"]}/{filename}.jpg";
+            await File.WriteAllBytesAsync(path, await response.Content.ReadAsByteArrayAsync());
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
         }
     }
 }

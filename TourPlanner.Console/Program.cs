@@ -1,55 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using TourPlanner.Common;
+﻿using TourPlanner.Common;
 using TourPlanner.DAL.MapQuest;
 
-namespace TourPlanner.Console
+var config = AppSettings.GetInstance().Configuration;
+        
+var from = new Address()
 {
-    internal class Program
-    {
-        private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
+    Road = "Am Graben",
+    Number = "19",
+    City = "Vienna"
+};
         
-        private static readonly Address From = new()
-        {
-            Road = "Höchstädtplatz",
-            Number = "6",
-            City = "Vienna"
-        };
+var to = new Address()
+{
+    Road = "Schwedenplatz",
+    Number = "",
+    City = "Vienna"
+};
         
-        private static readonly Address To = new()
-        {
-            Road = "Schwedenplatz",
-            Number = "",
-            City = "Vienna"
-        };
-        
-        public static void Main(string[] args)
-        {
-            var id = Guid.NewGuid();
-            var tour = new Tour()
-            {
-                Id = id,
-                Name = "Test Tour",
-                Description = "This is a description of the test tour.",
-                From = From,
-                To = To,
-                TransportType = TransportType.Bicycle
-            };
-            
-            // var metaData = await MapQuestService.GetRouteMetaData(From, To, tour.TransportType);
-            // await MapQuestService.GetRouteImage(id.ToString(), From, To);
-            //
-            // tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
-            // tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
-            //
-            // File.WriteAllText($"{Config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
 
-            var report = new TourReport(tour, new List<TourLog>());
-            
-            report.ToPdf();
-        }
-    }
-}
+var id = Guid.NewGuid();
+var tour = new Tour()
+{
+    Id = id,
+    Name = "Test Tour",
+    Description = "This is a description of the test tour.",
+    From = from,
+    To = to,
+    TransportType = TransportType.Bicycle,
+    Distance = 0.9399,
+    EstimatedTime = new TimeSpan(0, 3, 23)
+};
+        
+// var metaData = await MapQuestService.GetRouteMetaData(from, to, tour.TransportType);
+// await MapQuestService.GetRouteImage(id.ToString(), from, to);
+
+// tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+// tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
+
+// File.WriteAllText($"{config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
+
+var report = new TourReport(tour, new List<TourLog>());
+report.ToPdf();

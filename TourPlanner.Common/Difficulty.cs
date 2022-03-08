@@ -1,10 +1,9 @@
-namespace TourPlanner.Common
+namespace TourPlanner.Common;
+
+public enum Difficulty
 {
-    public enum Difficulty
-    {
-        Easy,
-        Medium,
-        Hard,
-        Extreme
-    }
+    Easy,
+    Medium,
+    Hard,
+    Extreme
 }

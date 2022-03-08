@@ -1,9 +1,8 @@
-namespace TourPlanner.Common
+namespace TourPlanner.Common;
+
+public enum TransportType
 {
-    public enum TransportType
-    {
-        Car,
-        Bicycle,
-        Walking
-    }
+    Car,
+    Bicycle,
+    Walking
 }
