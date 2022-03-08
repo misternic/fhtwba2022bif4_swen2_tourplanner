@@ -69,7 +69,7 @@ public static class MapQuestService
                 return false;
             }
 
-            var path = $"{Config["PersistenceFolder"]}/{filename}.jpg";
+            var path = Path.Join(Config["PersistenceFolder"], $"{filename}.jpg");
             await File.WriteAllBytesAsync(path, await response.Content.ReadAsByteArrayAsync());
 
             return true;

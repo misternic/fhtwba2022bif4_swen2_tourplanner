@@ -18,65 +18,54 @@ public class TourReport
         Tour = tour;
         Logs = logs;
     }
+
+    private void LogsSection(SectionBuilder section)
+    {
+        section
+            .SetOrientation(PageOrientation.Portrait)
+            .AddHeading($"{Tour.Name} | Logs")
+            .ToDocument();
+    }
+
+    private void CoverSection(SectionBuilder section)
+    {
+        section
+            .SetOrientation(PageOrientation.Portrait)
+            .AddHeading($"{Tour.Name} | Report")
+            .AddTable()
+            .SetContentPadding(8)
+            .SetBorderColor(Color.FromHtml("#c2c2c2"))
+            .AddColumnPercentToTable("", 25)
+            .AddColumnPercentToTable("", 75)
+                .AddRowFromList(new List<string> {"ID:", Tour.Id.ToString()})
+                .AddRowFromList(new List<string> {"Name:", Tour.Name})
+                .AddRowFromList(new List<string> {"Description:", Tour.Description})
+                .AddRowFromList(new List<string> {"From:", Tour.From.ToString()})
+                .AddRowFromList(new List<string> {"To:", Tour.To.ToString()})
+                .AddRowFromList(new List<string> {"Transport:", Tour.TransportType.ToString()})
+                .AddRowFromList(new List<string> {"Distance:", Tour.Distance.ToString(CultureInfo.CurrentCulture)})
+                .AddRowFromList(new List<string> {"Estimated Time:", Tour.EstimatedTime.ToString()})
+                .AddRow()
+                    .AddCellToRow("Route:")
+                    .AddCell()
+                        .AddImage(Path.Join(Config["PersistenceFolder"], $"{Tour.Id}.jpg"))
+                            .SetWidth(400)
+                            .SetHeight(400)
+                        .ToCell()
+                    .ToRow()
+                .ToTable()
+            .ToDocument();
+    }
     
     public void ToPdf()
     {
         var path = Path.Join(Config["PersistenceFolder"], $"{Tour.Name}.pdf");
         var fileStream = new FileStream(path, FileMode.Create);
 
-        DocumentBuilder
-            .New()
-            .AddSection()
-            .SetOrientation(PageOrientation.Portrait)
-
-            // Header
-            .AddHeaderToBothPages(25)
-            .AddParagraph($"Report: {Tour.Name}")
-            .ToSection()
-            
-            .AddParagraph($"TourPlanner Report: {Tour.Name}")
-            .SetBold()
-            .SetFontSize(16)
-            .SetMarginBottom(10)
-            .ToSection()
-
-            // Generic tour info
-            .AddTable()
-                .SetContentPadding(5)
-                .AddColumnPercentToTable("", 25)
-                .AddColumnPercentToTable("", 75)
-                    .AddRow()
-                        .AddCellToRow("Name")
-                        .AddCellToRow(Tour.Name)
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("Description")
-                        .AddCellToRow(Tour.Description)
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("From")
-                        .AddCellToRow(Tour.From.ToString())
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("To")
-                        .AddCellToRow(Tour.To.ToString())
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("Transport")
-                        .AddCellToRow(Tour.TransportType.ToString())
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("Distance")
-                        .AddCellToRow($"{Tour.Distance.ToString(CultureInfo.CurrentCulture)} km")
-                        .ToTable()
-                    .AddRow()
-                        .AddCellToRow("Duration")
-                        .AddCellToRow(Tour.EstimatedTime.ToString())
-                        .ToTable()
-
-            // Build and write to file stream
-            .ToDocument()
-            .Build(fileStream);
+        var document = DocumentBuilder.New();
+        document.AddSection(CoverSection);
+        document.AddSection(LogsSection);
+        document.Build(fileStream);
 
         fileStream.Close();    
     }

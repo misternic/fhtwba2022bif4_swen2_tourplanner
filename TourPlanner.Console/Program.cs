@@ -18,7 +18,7 @@ var to = new Address()
 };
         
 
-var id = Guid.NewGuid();
+var id = Guid.Parse("c2623f65-46ab-4ffa-917a-aedc3d3f9dd2");
 var tour = new Tour()
 {
     Id = id,
