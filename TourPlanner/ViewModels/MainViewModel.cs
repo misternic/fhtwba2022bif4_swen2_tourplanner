@@ -4,7 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TourPlanner.BusinessLayer;
+using TourPlanner.BL;
+using TourPlanner.Common;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
