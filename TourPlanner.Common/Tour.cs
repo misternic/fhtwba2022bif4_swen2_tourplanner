@@ -11,9 +11,9 @@ public class Tour
     
     public string Description { get; set; }
     
-    public Address From { get; set; }
+    public string From { get; set; }
     
-    public Address To { get; set; }
+    public string To { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
     public TransportType TransportType { get; set; } = TransportType.Bicycle;

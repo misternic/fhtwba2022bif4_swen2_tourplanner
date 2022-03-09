@@ -14,15 +14,15 @@ public static class MapQuestService
         {TransportType.Walking, "pedestrian"}
     };
     
-    public static async Task<MapQuestRouteDto?> GetRouteMetaData(Address from, Address to, TransportType type)
+    public static async Task<MapQuestRouteDto?> GetRouteMetaData(string from, string to, TransportType type)
     {
         try
         {
             var parameters = new Dictionary<string, string>()
                 {
                     {"key", Config["MapQuestApiKey"]},
-                    {"from", from.ToString()},
-                    {"to", to.ToString()},
+                    {"from", from},
+                    {"to", to},
                     {"unit", "k"},
                     {"locale", "de_DE"},
                     {"routeType", RouteTypes[type]}
@@ -47,15 +47,15 @@ public static class MapQuestService
         }
     }
 
-    public static async Task<bool> GetRouteImage(string filename, Address from, Address to)
+    public static async Task<bool> GetRouteImage(string filename, string from, string to)
     {
         try
         {
             var parameters = new Dictionary<string, string>()
                 {
                     {"key", Config["MapQuestApiKey"]},
-                    {"start", $"{from.ToString()}|flag-start"},
-                    {"end", $"{to.ToString()}|flag-end"},
+                    {"start", $"{from}|flag-start"},
+                    {"end", $"{to}|flag-end"},
                     {"size", "@2x"},
                     // TODO: find better zoom value (maybe dynamic from distance of route?)   
                 }
