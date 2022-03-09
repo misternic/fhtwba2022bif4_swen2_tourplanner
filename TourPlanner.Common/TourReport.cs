@@ -3,6 +3,7 @@ using Gehtsoft.PDFFlow.Builder;
 using Gehtsoft.PDFFlow.Models.Enumerations;
 using Gehtsoft.PDFFlow.Models.Shared;
 using Microsoft.Extensions.Configuration;
+using TourPlanner.Common.Extensions;
 
 namespace TourPlanner.Common;
 
@@ -21,9 +22,36 @@ public class TourReport
 
     private void LogsSection(SectionBuilder section)
     {
+        var formattedLogs = Logs.Select((log) => new List<string>
+        {
+            log.Date.ToString(),
+            log.Duration.ToString(),
+            log.Difficulty.ToString(),
+            $"{log.Rating.ToString()} / 5",
+            log.Comment.ToString(),
+        }).ToList();
+        
         section
             .SetOrientation(PageOrientation.Portrait)
             .AddHeading($"{Tour.Name} | Logs")
+            .AddTable()
+            .SetBorderColor(Color.FromHtml("#c2c2c2"))
+                .SetContentPadding(5)
+                .SetAltRowStyle(
+                    StyleBuilder.New()
+                        .SetPaddingTop(new XUnit(5))
+                        .SetPaddingBottom(new XUnit(5))
+                        .SetPaddingLeft(new XUnit(5))
+                        .SetPaddingRight(new XUnit(5))
+                        .SetBorderColor(Color.FromHtml("#c2c2c2"))
+                        .SetBackColor(Color.FromHtml("#f5f5f5"))
+                )
+                .AddColumnToTable("Date")
+                .AddColumnToTable("Duration")
+                .AddColumnToTable("Difficulty")
+                .AddColumnToTable("Rating")
+                .AddColumnToTable("Comment")
+                .AddRowsFromList(formattedLogs)
             .ToDocument();
     }
 

@@ -1,8 +1,8 @@
 using Gehtsoft.PDFFlow.Builder;
 
-namespace TourPlanner.Common;
+namespace TourPlanner.Common.Extensions;
 
-public static class PDFFlowExtensions
+public static class PdfFlowExtensions
 {
     public static TableBuilder AddRowFromList(this TableBuilder tb, List<string> columns)
     {
@@ -12,6 +12,17 @@ public static class PDFFlowExtensions
             rb.AddCellToRow(column);
         }
         rb.ToTable();
+        
+        return tb;
+    }
+
+    public static TableBuilder AddRowsFromList(this TableBuilder tb, List<List<string>> rows)
+    {
+        foreach (var row in rows)
+        {
+            tb.AddRowFromList(row);
+        }
+
         return tb;
     }
 

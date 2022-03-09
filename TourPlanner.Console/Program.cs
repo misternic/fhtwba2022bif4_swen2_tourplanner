@@ -16,7 +16,6 @@ var to = new Address()
     Number = "",
     City = "Vienna"
 };
-        
 
 var id = Guid.Parse("c2623f65-46ab-4ffa-917a-aedc3d3f9dd2");
 var tour = new Tour()
@@ -39,5 +38,40 @@ var tour = new Tour()
 
 // File.WriteAllText($"{config["PersistenceFolder"]}/{id.ToString()}.json", tour.ToJson());
 
-var report = new TourReport(tour, new List<TourLog>());
+var logs = new List<TourLog>
+{
+    new()
+    {
+        Date = new DateOnly(2022, 3, 1),
+        Comment = "This is a comment.",
+        Rating = 4,
+        Difficulty = Difficulty.Easy,
+        Duration = new TimeSpan(0, 5, 23)
+    },
+    new()
+    {
+        Date = new DateOnly(2022, 3, 2),
+        Rating = 3,
+        Difficulty = Difficulty.Hard,
+        Duration = new TimeSpan(0, 10, 59)
+    },
+    new()
+    {
+        Date = new DateOnly(2022, 3, 3),
+        Comment = "This was extremely hard and I don't want to do it again.",
+        Rating = 1,
+        Difficulty = Difficulty.Extreme,
+        Duration = new TimeSpan(4, 2, 0)
+    },
+    new()
+    {
+        Date = new DateOnly(2022, 3, 4),
+        Rating = 5,
+        Comment = "Easy Peasy",
+        Difficulty = Difficulty.Easy,
+        Duration = new TimeSpan(0, 3, 59)
+    }
+};
+
+var report = new TourReport(tour, logs);
 report.ToPdf();
