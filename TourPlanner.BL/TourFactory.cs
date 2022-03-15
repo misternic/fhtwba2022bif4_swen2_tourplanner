@@ -1,15 +1,11 @@
-﻿namespace TourPlanner.BL
+﻿namespace TourPlanner.BL;
+
+public static class TourFactory
 {
-    public static class TourFactory
+    private static ITourFactory? _instance;
+    
+    public static ITourFactory GetInstance()
     {
-        private static ITourFactory instance;
-        public static ITourFactory GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new TourFactoryImpl();
-            }
-            return instance;
-        }
+        return _instance ??= new TourFactoryImpl();
     }
 }
