@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL;
 using TourPlanner.Common;
+using TourPlanner.DAL;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
@@ -18,7 +19,10 @@ namespace TourPlanner.ViewModels
 
         public MainViewModel()
         {
-            this.tourFactory = TourFactory.GetInstance(); 
+            var context = DbContext.GetInstance();
+            context.Init();
+            
+            tourFactory = TourFactory.GetInstance();
 
             Tours = new ObservableCollection<Tour>();
 
