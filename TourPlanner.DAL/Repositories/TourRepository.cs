@@ -98,7 +98,7 @@ public sealed class TourRepository : BaseRepository<Tour>
         return false;
     }
 
-    public override void Delete(Guid id)
+    public override bool Delete(Guid id)
     {
         var cmd = new NpgsqlCommand("DELETE FROM tours WHERE id=@id", Context.Connection, Context.Transaction);
         cmd.Parameters.AddWithValue("id", id);
@@ -106,9 +106,10 @@ public sealed class TourRepository : BaseRepository<Tour>
         if (cmd.ExecuteNonQuery() == 1)
         {
             Context.Commit();
-            return;
+            return true;
         }
         
         Context.Rollback();
+        return false;
     }
 }

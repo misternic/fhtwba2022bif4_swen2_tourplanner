@@ -9,7 +9,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         Context = context;
     }
 
-    public virtual void Delete(Guid id)
+    public virtual bool Delete(Guid id)
     {
         throw new NotImplementedException();
     }

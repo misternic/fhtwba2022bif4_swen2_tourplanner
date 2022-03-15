@@ -41,6 +41,40 @@ void TestTourRepository()
 }
 
 // --------------------------------------------
+// TourLog Repository
+// --------------------------------------------
+void TestTourLogRepository()
+{
+    var context = DbContext.GetInstance();
+    // context.Init();
+    var logRepository = new TourLogRepository(context);
+
+    var log = new TourLog
+    {
+        Id = Guid.NewGuid(),
+        TourId = tour.Id,
+        Date = new DateOnly(2022, 1, 1),
+        Difficulty = Difficulty.Easy,
+        Duration = new TimeSpan(0, 5, 30),
+        Rating = 3,
+        Comment = "This is a log comment"
+    };
+
+    var insert = logRepository.Insert(log);
+    var get = logRepository.Get().ToList();
+
+    log.Comment = "This is an updated log comment.";
+
+    var update = logRepository.Update(log);
+    var getById = logRepository.GetById(log.Id);
+    
+    Console.WriteLine($"Insert: {insert}");
+    Console.WriteLine($"Get: {get.Count}");
+    Console.WriteLine($"Update: {update}");
+    Console.WriteLine($"Get by ID: {getById.Comment}");
+}
+
+// --------------------------------------------
 // MapQuest HTTP Endpoint
 // --------------------------------------------
 async void TestMapQuestRequests()
@@ -104,6 +138,7 @@ void TestReportExport()
 
 // TestMapQuestRequests();
 TestTourRepository();
+TestTourLogRepository();
 // TestReportExport();
 
 
