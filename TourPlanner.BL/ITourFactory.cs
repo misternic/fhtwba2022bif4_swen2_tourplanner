@@ -6,6 +6,6 @@ namespace TourPlanner.BL
     public interface ITourFactory
     {
         IEnumerable<Tour> GetItems();
-        IEnumerable<Tour> Search(string name);
+        IEnumerable<Tour> Search(string searchText);
     }
 }

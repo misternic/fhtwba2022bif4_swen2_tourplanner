@@ -32,11 +32,10 @@ namespace TourPlanner.ViewModels
         {
             SearchCommand = new RelayCommand((_) =>
             {
-                this.SearchEvent?.Invoke(this, SearchText);
-                Debug.Print("Search Button clicked!");
+                this.SearchEvent?.Invoke(this, this.SearchText);
             }, (_) =>
             {
-                return SearchText.Length > 0;
+                return this.SearchText.Length > 0;
             });
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,22 +14,37 @@ namespace TourPlanner.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private ITourFactory tourFactory;
+        private ITourFactory _tourFactory;
 
-        public ObservableCollection<Tour> Tours { get; set; }
+        public ObservableCollection<Tour> Tours { get; set; } = new ObservableCollection<Tour>();
 
-        public MainViewModel()
-        {
-            var context = DbContext.GetInstance();
-            context.Init();
-            
-            tourFactory = TourFactory.GetInstance();
+        public MainViewModel(SearchBarViewModel searchBar)
+        {            
+            this._tourFactory = TourFactory.GetInstance();
 
-            Tours = new ObservableCollection<Tour>();
+            this.LoadAllItems();
 
-            foreach(Tour item in this.tourFactory.GetItems())
+            searchBar.SearchEvent += (_, searchText) =>
             {
-                Tours.Add(item);
+                this.Search(searchText);
+            };
+        }
+
+        public void LoadAllItems()
+        {
+            foreach (Tour item in this._tourFactory.GetItems())
+            {
+                this.Tours.Add(item);
+            }
+        }
+
+        public void Search(string searchText)
+        {
+            this.Tours.Clear();
+
+            foreach (Tour item in this._tourFactory.Search(searchText))
+            {
+                this.Tours.Add(item);
             }
         }
     }

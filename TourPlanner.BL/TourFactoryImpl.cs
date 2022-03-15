@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 using TourPlanner.Common;
 using TourPlanner.DAL;
 using TourPlanner.DAL.Repositories;
@@ -21,9 +23,9 @@ namespace TourPlanner.BL
             return _tourRepository.Get();
         }
 
-        public IEnumerable<Tour> Search(string name)
+        public IEnumerable<Tour> Search(string searchText)
         {
-            throw new NotImplementedException();
+            return _tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), searchText, RegexOptions.IgnoreCase).Success);
         }
     }
 }
