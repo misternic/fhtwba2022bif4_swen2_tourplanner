@@ -15,11 +15,12 @@ public class MainViewModelTests
     public void TestData_ShouldHave4EntriesOnStartup()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), new SidebarViewModel(), new TourLogsViewModel(), new TourViewModel());
+        SidebarViewModel sidebarViewModel = new SidebarViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), sidebarViewModel, new TourLogsViewModel(), new TourViewModel());
 
         // act
         int expectedCount = 4;
-        int actualCount = mainViewModel.Tours.Count;
+        int actualCount = sidebarViewModel.Tours.Count;
 
         // assert
         Assert.AreEqual(actualCount, expectedCount);
@@ -29,8 +30,9 @@ public class MainViewModelTests
     public void TestAddCommand_ShouldAddNewEntry()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), new SidebarViewModel(), new TourLogsViewModel(), new TourViewModel());
-        int lastCount = mainViewModel.Tours.Count;
+        SidebarViewModel sidebarViewModel = new SidebarViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), sidebarViewModel, new TourLogsViewModel(), new TourViewModel());
+        int lastCount = sidebarViewModel.Tours.Count;
 
         // act
         //mainViewModel.CurretUsername = "Testname";
@@ -38,10 +40,10 @@ public class MainViewModelTests
         //mainViewModel.AddCommand.Execute(null);
 
         // TODO
-        mainViewModel.Tours.Add(new Tour());
+        sidebarViewModel.Tours.Add(new Tour());
 
         // assert
-        Assert.AreEqual(lastCount + 1, mainViewModel.Tours.Count, "There should be one more entry in Tours");
+        Assert.AreEqual(lastCount + 1, sidebarViewModel.Tours.Count, "There should be one more entry in Tours");
         // Assert.AreEqual("Testname", mainViewModel.Tours[lastCount+1].Name, "Name is different");
         // Assert.AreEqual("", mainViewModel.CurrentUsername, "Username should be cleared!");
     }
