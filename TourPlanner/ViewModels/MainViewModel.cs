@@ -16,10 +16,20 @@ namespace TourPlanner.ViewModels
     {
         private ITourFactory _tourFactory;
 
-        public ObservableCollection<Tour> Tours { get; set; } = new ObservableCollection<Tour>();
+        private MenuViewModel menu;
+        private SearchbarViewModel searchbar;
+        private SidebarViewModel sidebar;
+        private TourLogsViewModel tourLogs;
+        private TourViewModel tour;
 
         public MainViewModel(MenuViewModel menu, SearchbarViewModel searchbar, SidebarViewModel sidebar, TourLogsViewModel tourLogs, TourViewModel tour)
-        {            
+        {
+            this.menu = menu;
+            this.searchbar = searchbar;
+            this.sidebar = sidebar;
+            this.tourLogs = tourLogs;
+            this.tour = tour;
+            
             this._tourFactory = TourFactory.GetInstance();
 
             this.LoadAllItems();
@@ -34,17 +44,17 @@ namespace TourPlanner.ViewModels
         {
             foreach (Tour item in this._tourFactory.GetItems())
             {
-                this.Tours.Add(item);
+                this.sidebar.Tours.Add(item);
             }
         }
 
         public void Search(string searchText)
         {
-            this.Tours.Clear();
+            this.sidebar.Tours.Clear();
 
             foreach (Tour item in this._tourFactory.Search(searchText))
             {
-                this.Tours.Add(item);
+                this.sidebar.Tours.Add(item);
             }
         }
     }
