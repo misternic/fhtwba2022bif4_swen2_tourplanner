@@ -34,6 +34,16 @@ namespace TourPlanner.ViewModels
 
             this.LoadAllItems();
 
+            sidebar.AddEvent += (_, tour) =>
+            {
+                this.AddTour(tour);
+            };
+
+            sidebar.RemoveEvent += (_, tour) =>
+            {
+                this.RemoveTour(tour);
+            };
+
             searchbar.SearchEvent += (_, searchText) =>
             {
                 this.Search(searchText);
@@ -42,10 +52,32 @@ namespace TourPlanner.ViewModels
 
         public void LoadAllItems()
         {
+            this.sidebar.Tours.Clear();
+
             foreach (Tour item in this._tourFactory.GetItems())
             {
                 this.sidebar.Tours.Add(item);
             }
+        }
+
+        public void AddTour(Tour tour)
+        {
+            tour.Id = Guid.NewGuid();
+            tour.Name = "New Tour";
+            tour.Description = "";
+            tour.From = "";
+            tour.To = "";
+            this._tourFactory.AddItem(tour);
+
+            LoadAllItems();
+            sidebar.SelectedTour = tour;
+        }
+
+        public void RemoveTour(Tour tour)
+        {
+            this._tourFactory.RemoveItem(tour);
+
+            LoadAllItems();
         }
 
         public void Search(string searchText)

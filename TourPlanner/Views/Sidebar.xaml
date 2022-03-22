@@ -9,12 +9,28 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="1,1,1,1">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Image Source="/images/plus-box.png" Width="18" Height="18" />
-                <Image Source="/images/close-box.png" Width="18" Height="18" />
+                <Image Source="/images/plus-box.png" Width="18" Height="18" Cursor="Hand">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding AddCommand, Mode=OneTime}" />
+                    </Image.InputBindings>
+                </Image>
+
+                <Image Source="/images/close-box.png" Width="18" Height="18" Cursor="Hand">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding RemoveCommand, Mode=OneTime}" />
+                    </Image.InputBindings>
+                </Image>
+
                 <Image Source="/images/pencil.png" Width="18" Height="18" />
             </StackPanel>
             <Label Content="Tours" FontWeight="Bold" />
         </DockPanel>
-        <ListBox x:Name="tourItems" ItemsSource="{Binding Tours}" DisplayMemberPath="Name" />
+        <ListBox x:Name="tourItems" ItemsSource="{Binding Tours}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTour}">
+            <ListBox.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding SelectedCommand, Mode=OneTime}" />
+            </ListBox.InputBindings>
+        </ListBox>
+
+
     </DockPanel>
 </UserControl>

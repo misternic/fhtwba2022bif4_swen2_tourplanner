@@ -17,7 +17,17 @@ namespace TourPlanner.BL
             var context = DbContext.GetInstance();
             _tourRepository = new TourRepository(context);
         }
-        
+
+        public bool AddItem(Tour tour)
+        {
+            return this._tourRepository.Insert(tour);
+        }
+
+        public bool RemoveItem(Tour tour)
+        {
+            return this._tourRepository.Delete(tour.Id);
+        }
+
         public IEnumerable<Tour> GetItems()
         {
             return _tourRepository.Get();
