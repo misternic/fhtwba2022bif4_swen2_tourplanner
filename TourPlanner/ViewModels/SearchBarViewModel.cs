@@ -33,9 +33,6 @@ namespace TourPlanner.ViewModels
             SearchCommand = new RelayCommand((_) =>
             {
                 this.SearchEvent?.Invoke(this, this.SearchText);
-            }, (_) =>
-            {
-                return this.SearchText.Length > 0;
             });
         }
     }
