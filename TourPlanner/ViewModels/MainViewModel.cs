@@ -18,13 +18,13 @@ namespace TourPlanner.ViewModels
 
         public ObservableCollection<Tour> Tours { get; set; } = new ObservableCollection<Tour>();
 
-        public MainViewModel(SearchBarViewModel searchBar)
+        public MainViewModel(MenuViewModel menu, SearchbarViewModel searchbar, SidebarViewModel sidebar, TourLogsViewModel tourLogs, TourViewModel tour)
         {            
             this._tourFactory = TourFactory.GetInstance();
 
             this.LoadAllItems();
 
-            searchBar.SearchEvent += (_, searchText) =>
+            searchbar.SearchEvent += (_, searchText) =>
             {
                 this.Search(searchText);
             };

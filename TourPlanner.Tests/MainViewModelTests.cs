@@ -15,7 +15,7 @@ public class MainViewModelTests
     public void TestData_ShouldHave4EntriesOnStartup()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), new SidebarViewModel(), new TourLogsViewModel(), new TourViewModel());
 
         // act
         int expectedCount = 4;
@@ -29,7 +29,7 @@ public class MainViewModelTests
     public void TestAddCommand_ShouldAddNewEntry()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchbarViewModel(), new SidebarViewModel(), new TourLogsViewModel(), new TourViewModel());
         int lastCount = mainViewModel.Tours.Count;
 
         // act

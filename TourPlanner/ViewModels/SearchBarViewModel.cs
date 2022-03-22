@@ -9,7 +9,7 @@ using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
 {
-    public class SearchBarViewModel : BaseViewModel
+    public class SearchbarViewModel : BaseViewModel
     {
         public string SearchText
         {
@@ -28,7 +28,7 @@ namespace TourPlanner.ViewModels
 
         public event EventHandler<string> SearchEvent;
 
-        public SearchBarViewModel()
+        public SearchbarViewModel()
         {
             SearchCommand = new RelayCommand((_) =>
             {
