@@ -37,22 +37,26 @@ namespace TourPlanner.ViewModels
 
         public void SetupUI ()
         {
-            this.LoadAllItems();
+            this.LoadTours();
 
             sidebar.AddEvent += (_, tour) => this.AddTour(tour);
             sidebar.RemoveEvent += (_, tour) => this.RemoveTour(tour);
-            searchbar.SearchEvent += (_, searchText) => this.Search(searchText);
+            searchbar.SearchEvent += (_, filter) => this.LoadTours(filter);
             sidebar.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
         }
-
-        public void LoadAllItems()
+        public void LoadTours(string filter = null)
         {
             this.sidebar.Tours.Clear();
 
-            foreach (Tour item in this._tourFactory.GetItems())
+            foreach (Tour item in this._tourFactory.GetItems(filter))
             {
                 this.sidebar.Tours.Add(item);
             }
+        }
+
+        public void ClearFilter()
+        {
+            this.searchbar.SearchText = "";
         }
 
         public void TourSelected(Tour tour)
@@ -75,30 +79,15 @@ namespace TourPlanner.ViewModels
             tour.To = "";
             this._tourFactory.AddItem(tour);
 
-            this.LoadAllItems();
+            this.ClearFilter();
+            this.LoadTours();
             // sidebar.SelectedTour = tour; TODO
         }
 
         public void RemoveTour(Tour tour)
         {
             this._tourFactory.RemoveItem(tour);
-            this.LoadAllItems();
-        }
-
-        public void Search(string searchText)
-        {
-            if (searchText.Length == 0)
-            {
-                this.LoadAllItems();
-                return;
-            }
-
-            this.sidebar.Tours.Clear();
-
-            foreach (Tour item in this._tourFactory.Search(searchText))
-            {
-                this.sidebar.Tours.Add(item);
-            }
+            this.LoadTours(this.searchbar.SearchText);
         }
     }
 }

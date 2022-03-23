@@ -18,6 +18,14 @@ namespace TourPlanner.BL
             _tourRepository = new TourRepository(context);
         }
 
+        public IEnumerable<Tour> GetItems(string filter)
+        {
+            if (filter == null || filter == string.Empty)
+                return _tourRepository.Get();
+            else
+                return _tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), filter, RegexOptions.IgnoreCase).Success);
+        }
+
         public bool AddItem(Tour tour)
         {
             return this._tourRepository.Insert(tour);
@@ -26,16 +34,6 @@ namespace TourPlanner.BL
         public bool RemoveItem(Tour tour)
         {
             return this._tourRepository.Delete(tour.Id);
-        }
-
-        public IEnumerable<Tour> GetItems()
-        {
-            return _tourRepository.Get();
-        }
-
-        public IEnumerable<Tour> Search(string searchText)
-        {
-            return _tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), searchText, RegexOptions.IgnoreCase).Success);
         }
     }
 }
