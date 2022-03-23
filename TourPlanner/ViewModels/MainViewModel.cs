@@ -14,8 +14,6 @@ namespace TourPlanner.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private ITourFactory _tourFactory;
-
         private MenuViewModel menu;
         private SearchbarViewModel searchbar;
         private SidebarViewModel sidebar;
@@ -29,8 +27,6 @@ namespace TourPlanner.ViewModels
             this.sidebar = sidebar;
             this.tourLogs = tourLogs;
             this.tour = tour;
-            
-            this._tourFactory = TourFactory.GetInstance();
 
             this.SetupUI();
         }
@@ -48,7 +44,7 @@ namespace TourPlanner.ViewModels
         {
             this.sidebar.Tours.Clear();
 
-            foreach (Tour item in this._tourFactory.GetItems(filter))
+            foreach (Tour item in TourController.GetItems(filter))
             {
                 this.sidebar.Tours.Add(item);
             }
@@ -77,7 +73,7 @@ namespace TourPlanner.ViewModels
             tour.Description = "";
             tour.From = "";
             tour.To = "";
-            this._tourFactory.AddItem(tour);
+            TourController.AddItem(tour);
 
             this.ClearFilter();
             this.LoadTours();
@@ -86,7 +82,7 @@ namespace TourPlanner.ViewModels
 
         public void RemoveTour(Tour tour)
         {
-            this._tourFactory.RemoveItem(tour);
+            TourController.RemoveItem(tour);
             this.LoadTours(this.searchbar.SearchText);
         }
     }
