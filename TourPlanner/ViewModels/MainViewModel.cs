@@ -32,22 +32,17 @@ namespace TourPlanner.ViewModels
             
             this._tourFactory = TourFactory.GetInstance();
 
+            this.SetupUI();
+        }
+
+        public void SetupUI ()
+        {
             this.LoadAllItems();
 
-            sidebar.AddEvent += (_, tour) =>
-            {
-                this.AddTour(tour);
-            };
-
-            sidebar.RemoveEvent += (_, tour) =>
-            {
-                this.RemoveTour(tour);
-            };
-
-            searchbar.SearchEvent += (_, searchText) =>
-            {
-                this.Search(searchText);
-            };
+            sidebar.AddEvent += (_, tour) => this.AddTour(tour);
+            sidebar.RemoveEvent += (_, tour) => this.RemoveTour(tour);
+            searchbar.SearchEvent += (_, searchText) => this.Search(searchText);
+            sidebar.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
         }
 
         public void LoadAllItems()
@@ -60,6 +55,17 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        public void TourSelected(Tour tour)
+        {
+            //this.LoadTourDetails(tour); TODO
+            this.LoadTourLogs(tour);
+        }
+
+        public void LoadTourLogs(Tour tour)
+        {
+            //this.tourLogs.TourLog = this._tourFactory.LoadTourLogs(tour); TODO
+        }
+
         public void AddTour(Tour tour)
         {
             tour.Id = Guid.NewGuid();
@@ -69,19 +75,24 @@ namespace TourPlanner.ViewModels
             tour.To = "";
             this._tourFactory.AddItem(tour);
 
-            LoadAllItems();
-            sidebar.SelectedTour = tour;
+            this.LoadAllItems();
+            // sidebar.SelectedTour = tour; TODO
         }
 
         public void RemoveTour(Tour tour)
         {
             this._tourFactory.RemoveItem(tour);
-
-            LoadAllItems();
+            this.LoadAllItems();
         }
 
         public void Search(string searchText)
         {
+            if (searchText.Length == 0)
+            {
+                this.LoadAllItems();
+                return;
+            }
+
             this.sidebar.Tours.Clear();
 
             foreach (Tour item in this._tourFactory.Search(searchText))
