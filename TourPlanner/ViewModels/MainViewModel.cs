@@ -35,7 +35,7 @@ namespace TourPlanner.ViewModels
         {
             this.LoadTours();
 
-            sidebar.AddEvent += (_, tour) => this.AddTour(tour);
+            sidebar.AddEvent += (_, e) => this.AddTour();
             sidebar.RemoveEvent += (_, tour) => this.RemoveTour(tour);
             searchbar.SearchEvent += (_, filter) => this.LoadTours(filter);
             sidebar.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
@@ -66,18 +66,21 @@ namespace TourPlanner.ViewModels
             //this.tourLogs.TourLog = this._tourFactory.LoadTourLogs(tour); TODO
         }
 
-        public void AddTour(Tour tour)
+        public void AddTour()
         {
-            tour.Id = Guid.NewGuid();
-            tour.Name = "New Tour";
-            tour.Description = "";
-            tour.From = "";
-            tour.To = "";
-            TourController.AddItem(tour);
+            Guid newId = Guid.NewGuid();
+
+            Tour t = new Tour();
+            t.Id = newId;
+            t.Name = "New Tour";
+            t.Description = "";
+            t.From = "";
+            t.To = "";
+            TourController.AddItem(t);
 
             this.ClearFilter();
             this.LoadTours();
-            // sidebar.SelectedTour = tour; TODO
+            sidebar.SelectedTour = sidebar.Tours.Where(t => t.Id == newId).Single();
         }
 
         public void RemoveTour(Tour tour)

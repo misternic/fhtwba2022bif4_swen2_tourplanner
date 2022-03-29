@@ -34,7 +34,7 @@ namespace TourPlanner.ViewModels
 
 
         public event EventHandler<Tour> SelectedEvent;
-        public event EventHandler<Tour> AddEvent;
+        public event EventHandler AddEvent;
         public event EventHandler<Tour> RemoveEvent;
 
         public SidebarViewModel()
@@ -50,7 +50,7 @@ namespace TourPlanner.ViewModels
 
             AddCommand = new RelayCommand((_) =>
             {
-                this.AddEvent?.Invoke(this, new Tour());
+                this.AddEvent?.Invoke(this, EventArgs.Empty);
             });
 
             RemoveCommand = new RelayCommand((_) =>
