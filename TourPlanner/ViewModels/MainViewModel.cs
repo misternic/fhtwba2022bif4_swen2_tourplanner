@@ -14,19 +14,19 @@ namespace TourPlanner.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private MenuViewModel menu;
-        private SearchbarViewModel searchbar;
-        private SidebarViewModel sidebar;
-        private TourLogsViewModel tourLogs;
-        private TourViewModel tour;
+        private MenuViewModel menuVM;
+        private SearchViewModel searchVM;
+        private ToursViewModel toursVM;
+        private TourDetailsViewModel tourDetailsVM;
+        private TourLogsViewModel tourLogsVM;
 
-        public MainViewModel(MenuViewModel menu, SearchbarViewModel searchbar, SidebarViewModel sidebar, TourLogsViewModel tourLogs, TourViewModel tour)
+        public MainViewModel(MenuViewModel menuVM, SearchViewModel searchVM, ToursViewModel toursVM, TourDetailsViewModel tourDetailsVM, TourLogsViewModel tourLogsVM)
         {
-            this.menu = menu;
-            this.searchbar = searchbar;
-            this.sidebar = sidebar;
-            this.tourLogs = tourLogs;
-            this.tour = tour;
+            this.menuVM = menuVM;
+            this.searchVM = searchVM;
+            this.toursVM = toursVM;
+            this.tourDetailsVM = tourDetailsVM;
+            this.tourLogsVM = tourLogsVM;
 
             this.SetupUI();
         }
@@ -35,24 +35,24 @@ namespace TourPlanner.ViewModels
         {
             this.LoadTours();
 
-            sidebar.AddEvent += (_, e) => this.AddTour();
-            sidebar.RemoveEvent += (_, tour) => this.RemoveTour(tour);
-            searchbar.SearchEvent += (_, filter) => this.LoadTours(filter);
-            sidebar.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
+            this.toursVM.AddEvent += (_, e) => this.AddTour();
+            this.toursVM.RemoveEvent += (_, tour) => this.RemoveTour(tour);
+            this.searchVM.SearchEvent += (_, filter) => this.LoadTours(filter);
+            this.toursVM.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
         }
         public void LoadTours(string filter = null)
         {
-            this.sidebar.Tours.Clear();
+            this.toursVM.Tours.Clear();
 
             foreach (Tour item in TourController.GetItems(filter))
             {
-                this.sidebar.Tours.Add(item);
+                this.toursVM.Tours.Add(item);
             }
         }
 
         public void ClearFilter()
         {
-            this.searchbar.SearchText = "";
+            this.searchVM.SearchText = "";
         }
 
         public void TourSelected(Tour tour)
@@ -80,13 +80,13 @@ namespace TourPlanner.ViewModels
 
             this.ClearFilter();
             this.LoadTours();
-            sidebar.SelectedTour = sidebar.Tours.Where(t => t.Id == newId).Single();
+            this.toursVM.SelectedTour = this.toursVM.Tours.Where(t => t.Id == newId).Single();
         }
 
         public void RemoveTour(Tour tour)
         {
             TourController.RemoveItem(tour);
-            this.LoadTours(this.searchbar.SearchText);
+            this.LoadTours(this.searchVM.SearchText);
         }
     }
 }

@@ -8,8 +8,8 @@
         Title="Tour-Planner" Height="450" Width="800">
     <DockPanel>
         <Views:Menu x:Name="Menu" DockPanel.Dock="Top" />
-        
-        <Views:Searchbar x:Name="Searchbar" DockPanel.Dock="Top" />
+
+        <Views:Search x:Name="Search" DockPanel.Dock="Top" />
         
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,11 +23,11 @@
                 <RowDefinition Height="200*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Views:Sidebar x:Name="Sidebar" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
+            <Views:Tours x:Name="Tours" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
 
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
-            <Views:Tour x:Name="Tour" Grid.Row="0" Grid.Column="2" />
+            <Views:TourDetails x:Name="TourDetails" Grid.Row="0" Grid.Column="2" />
             
             <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 

@@ -9,7 +9,7 @@ using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
 {
-    public class TourViewModel : BaseViewModel
+    public class TourDetailsViewModel : BaseViewModel
     {
 
     }

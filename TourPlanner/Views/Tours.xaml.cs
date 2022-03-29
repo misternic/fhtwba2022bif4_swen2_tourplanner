@@ -18,9 +18,9 @@ namespace TourPlanner.Views
     /// <summary>
     /// Interaction logic for Sidebar.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class Tours : UserControl
     {
-        public Sidebar()
+        public Tours()
         {
             InitializeComponent();
         }

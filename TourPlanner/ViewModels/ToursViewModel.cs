@@ -11,7 +11,7 @@ using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
 {
-    public class SidebarViewModel : BaseViewModel
+    public class ToursViewModel : BaseViewModel
     {
 
         private Tour _selectedTour;
@@ -37,7 +37,7 @@ namespace TourPlanner.ViewModels
         public event EventHandler AddEvent;
         public event EventHandler<Tour> RemoveEvent;
 
-        public SidebarViewModel()
+        public ToursViewModel()
         {
             SelectedCommand = new RelayCommand((_) =>
             {

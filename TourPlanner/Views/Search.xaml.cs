@@ -18,9 +18,9 @@ namespace TourPlanner.Views
     /// <summary>
     /// Interaction logic for SearchBar.xaml
     /// </summary>
-    public partial class Searchbar : UserControl
+    public partial class Search : UserControl
     {
-        public Searchbar()
+        public Search()
         {
             InitializeComponent();
         }
