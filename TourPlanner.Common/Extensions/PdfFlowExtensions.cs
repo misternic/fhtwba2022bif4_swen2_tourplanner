@@ -4,7 +4,7 @@ namespace TourPlanner.Common.Extensions;
 
 public static class PdfFlowExtensions
 {
-    public static TableBuilder AddRowFromList(this TableBuilder tableBuilder, List<string> columns)
+    public static TableBuilder AddRowFromList(this TableBuilder tableBuilder, IEnumerable<string> columns)
     {
         var rowBuilder = tableBuilder.AddRow();
         
@@ -18,7 +18,7 @@ public static class PdfFlowExtensions
         return tableBuilder;
     }
 
-    public static TableBuilder AddRowsFromList(this TableBuilder tableBuilder, List<List<string>> rows)
+    public static TableBuilder AddRowsFromList(this TableBuilder tableBuilder, IEnumerable<IEnumerable<string>> rows)
     {
         foreach (var row in rows)
         {
