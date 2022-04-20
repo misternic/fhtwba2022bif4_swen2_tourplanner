@@ -11,8 +11,8 @@ public class TourReport
 {
     private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
     
-    private Tour Tour { get; set; }
-    private List<TourLog> Logs { get; set; }
+    private Tour Tour { get; }
+    private List<TourLog> Logs { get; }
 
     public TourReport(Tour tour, List<TourLog> logs)
     {
@@ -20,7 +20,7 @@ public class TourReport
         Logs = logs;
     }
 
-    private void LogsSection(SectionBuilder section)
+    private void BuildPdfLogsSection(SectionBuilder section)
     {
         var formattedLogs = Logs.Select((log) => new List<string>
         {
@@ -55,7 +55,7 @@ public class TourReport
             .ToDocument();
     }
 
-    private void CoverSection(SectionBuilder section)
+    private void BuildPdfCoverSection(SectionBuilder section)
     {
         section
             .SetOrientation(PageOrientation.Portrait)
@@ -85,16 +85,24 @@ public class TourReport
             .ToDocument();
     }
     
-    public void ToPdf()
+    public bool ExportToPdf()
     {
-        var path = Path.Join(Config["PersistenceFolder"], $"{Tour.Name}.pdf");
-        var fileStream = new FileStream(path, FileMode.Create);
+        try
+        {
+            var path = Path.Join(Config["PersistenceFolder"], $"{Tour.Name}.pdf");
+            var fileStream = new FileStream(path, FileMode.Create);
 
-        var document = DocumentBuilder.New();
-        document.AddSection(CoverSection);
-        document.AddSection(LogsSection);
-        document.Build(fileStream);
+            var document = DocumentBuilder.New();
+            document.AddSection(BuildPdfCoverSection);
+            document.AddSection(BuildPdfLogsSection);
+            document.Build(fileStream);
 
-        fileStream.Close();    
+            fileStream.Close();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

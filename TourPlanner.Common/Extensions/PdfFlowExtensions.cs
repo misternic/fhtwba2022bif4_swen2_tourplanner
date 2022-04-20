@@ -4,31 +4,33 @@ namespace TourPlanner.Common.Extensions;
 
 public static class PdfFlowExtensions
 {
-    public static TableBuilder AddRowFromList(this TableBuilder tb, List<string> columns)
+    public static TableBuilder AddRowFromList(this TableBuilder tableBuilder, List<string> columns)
     {
-        var rb = tb.AddRow();
+        var rowBuilder = tableBuilder.AddRow();
+        
         foreach (var column in columns)
         {
-            rb.AddCellToRow(column);
+            rowBuilder.AddCellToRow(column);
         }
-        rb.ToTable();
         
-        return tb;
+        rowBuilder.ToTable();
+        
+        return tableBuilder;
     }
 
-    public static TableBuilder AddRowsFromList(this TableBuilder tb, List<List<string>> rows)
+    public static TableBuilder AddRowsFromList(this TableBuilder tableBuilder, List<List<string>> rows)
     {
         foreach (var row in rows)
         {
-            tb.AddRowFromList(row);
+            tableBuilder.AddRowFromList(row);
         }
 
-        return tb;
+        return tableBuilder;
     }
 
-    public static SectionBuilder AddHeading(this SectionBuilder sb, string text)
+    public static SectionBuilder AddHeading(this SectionBuilder sectionBuilder, string text)
     {
-        return sb
+        return sectionBuilder
             .AddParagraph(text)
             .SetBold()
             .SetFontSize(16)

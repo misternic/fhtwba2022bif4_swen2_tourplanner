@@ -5,9 +5,9 @@ using TourPlanner.DAL.Repositories;
 
 var config = AppSettings.GetInstance().Configuration;
 
-var tour = new Tour()
+var tour = new Tour
 {
-    Id = Guid.NewGuid(),
+    Id = Guid.Parse("e5aa4d9a-4233-4c51-b7eb-727d854f674b"),
     Name = "Test Tour",
     Description = "This is a description of the test tour.",
     From = "Am Graben 19, Vienna, AT",
@@ -77,7 +77,7 @@ void TestTourLogRepository()
 // --------------------------------------------
 // MapQuest HTTP Endpoint
 // --------------------------------------------
-async void TestMapQuestRequests()
+async Task TestMapQuestRequests()
 {
     var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
     await MapQuestService.GetRouteImage(tour.Id.ToString(), tour.From, tour.To);
@@ -129,17 +129,15 @@ void TestReportExport()
     };
 
     var report = new TourReport(tour, logs);
-    report.ToPdf(); 
+    var success = report.ExportToPdf();
+    Console.WriteLine(success);
 }
 
 // --------------------------------------------
 // Function calls
 // --------------------------------------------
 
-// TestMapQuestRequests();
-TestTourRepository();
-TestTourLogRepository();
-// TestReportExport();
-
-
-
+// await TestMapQuestRequests();
+// TestTourRepository();
+// TestTourLogRepository();
+TestReportExport();
