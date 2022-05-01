@@ -10,8 +10,8 @@ namespace TourPlanner.ViewModels
 {
     public class TourLogsViewModel : BaseViewModel
     {
-        private List<TourLog> _tourLog;
-        public List<TourLog> TourLog
+        private IEnumerable<TourLog> _tourLog;
+        public IEnumerable<TourLog> TourLog
         {
             get => _tourLog;
             set

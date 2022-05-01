@@ -11,6 +11,6 @@ namespace TourPlanner.ViewModels
 {
     public class TourDetailsViewModel : BaseViewModel
     {
-
+        public string ImagePath { get; set; } = "/images/magnify.png";
     }
 }
