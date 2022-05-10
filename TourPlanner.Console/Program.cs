@@ -7,7 +7,7 @@ var config = AppSettings.GetInstance().Configuration;
 
 var tour = new Tour
 {
-    Id = Guid.Parse("e5aa4d9a-4233-4c51-b7eb-727d854f674b"),
+    Id = Guid.NewGuid(),
     Name = "Test Tour",
     Description = "This is a description of the test tour.",
     From = "Am Graben 19, Vienna, AT",
@@ -33,7 +33,7 @@ void TestTourRepository()
 
     var update = tourRepository.Update(tour);
     var getById = tourRepository.GetById(tour.Id);
-    
+
     Console.WriteLine($"Insert: {insert}");
     Console.WriteLine($"Get: {get.Count}");
     Console.WriteLine($"Update: {update}");
@@ -46,7 +46,7 @@ void TestTourRepository()
 void TestTourLogRepository()
 {
     var context = DbContext.GetInstance();
-    // context.Init();
+    context.Init();
     var logRepository = new TourLogRepository(context);
 
     var log = new TourLog
@@ -67,7 +67,7 @@ void TestTourLogRepository()
 
     var update = logRepository.Update(log);
     var getById = logRepository.GetById(log.Id);
-    
+
     Console.WriteLine($"Insert: {insert}");
     Console.WriteLine($"Get: {get.Count}");
     Console.WriteLine($"Update: {update}");
@@ -140,4 +140,4 @@ void TestReportExport()
 // await TestMapQuestRequests();
 // TestTourRepository();
 // TestTourLogRepository();
-TestReportExport();
+// TestReportExport();

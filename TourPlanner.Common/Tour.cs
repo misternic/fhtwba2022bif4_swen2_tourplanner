@@ -16,12 +16,16 @@ public class Tour
     public string To { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    public TransportType TransportType { get; set; } = TransportType.Bicycle;
+    public TransportType TransportType { get; set; }
     
     public double Distance { get; set; }
     
     public TimeSpan EstimatedTime { get; set; }
-
+    
+    public int? Popularity { get; set; }
+    
+    public double? ChildFriendlyness { get; set; }
+    
     public string ToJson()
     {
         return JsonConvert.SerializeObject(this);
