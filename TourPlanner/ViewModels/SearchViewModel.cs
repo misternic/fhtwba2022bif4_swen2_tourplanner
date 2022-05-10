@@ -9,7 +9,7 @@ using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
 {
-    public class SearchBarViewModel : BaseViewModel
+    public class SearchViewModel : BaseViewModel
     {
         public string SearchText
         {
@@ -28,15 +28,11 @@ namespace TourPlanner.ViewModels
 
         public event EventHandler<string> SearchEvent;
 
-        public SearchBarViewModel()
+        public SearchViewModel()
         {
             SearchCommand = new RelayCommand((_) =>
             {
-                this.SearchEvent?.Invoke(this, SearchText);
-                Debug.Print("Search Button clicked!");
-            }, (_) =>
-            {
-                return SearchText.Length > 0;
+                this.SearchEvent?.Invoke(this, this.SearchText);
             });
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,23 +14,84 @@ namespace TourPlanner.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private ITourFactory tourFactory;
+        private MenuViewModel menuVM;
+        private SearchViewModel searchVM;
+        private ToursViewModel toursVM;
+        private TourDetailsViewModel tourDetailsVM;
+        private TourLogsViewModel tourLogsVM;
 
-        public ObservableCollection<Tour> Tours { get; set; }
-
-        public MainViewModel()
+        public MainViewModel(MenuViewModel menuVM, SearchViewModel searchVM, ToursViewModel toursVM, TourDetailsViewModel tourDetailsVM, TourLogsViewModel tourLogsVM)
         {
-            var context = DbContext.GetInstance();
-            context.Init();
-            
-            tourFactory = TourFactory.GetInstance();
+            this.menuVM = menuVM;
+            this.searchVM = searchVM;
+            this.toursVM = toursVM;
+            this.tourDetailsVM = tourDetailsVM;
+            this.tourLogsVM = tourLogsVM;
 
-            Tours = new ObservableCollection<Tour>();
+            this.SetupUI();
+        }
 
-            foreach(Tour item in this.tourFactory.GetItems())
+        public void SetupUI ()
+        {
+            this.LoadTours();
+
+            this.searchVM.SearchEvent += (_, filter) => this.LoadTours(filter);
+            this.toursVM.AddEvent += (_, e) => this.AddTour();
+            this.toursVM.RemoveEvent += (_, tour) => this.RemoveTour(tour);
+            this.toursVM.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
+        }
+        public void LoadTours(string filter = null)
+        {
+            this.toursVM.Tours.Clear();
+
+            foreach (Tour item in TourController.GetItems(filter))
             {
-                Tours.Add(item);
+                this.toursVM.Tours.Add(item);
             }
+        }
+
+        public void ClearFilter()
+        {
+            this.searchVM.SearchText = String.Empty;
+        }
+
+        public void TourSelected(Tour tour)
+        {
+            this.LoadTourDetails(tour);
+            this.LoadTourLogs(tour);
+        }
+
+        public void LoadTourDetails(Tour tour)
+        {
+            // TODO
+        }
+
+        public void LoadTourLogs(Tour tour)
+        {
+            tourLogsVM.TourLog = TourLogController.GetLogsOfTour(tour.Id);
+        }
+
+        public void AddTour()
+        {
+            Guid newId = Guid.NewGuid();
+
+            Tour t = new Tour();
+            t.Id = newId;
+            t.Name = "New Tour";
+            t.Description = "";
+            t.From = "";
+            t.To = "";
+            TourController.AddItem(t);
+
+            this.ClearFilter();
+            this.LoadTours();
+            this.toursVM.SelectedTour = this.toursVM.Tours.Where(t => t.Id == newId).Single();
+        }
+
+        public void RemoveTour(Tour tour)
+        {
+            TourController.RemoveItem(tour);
+            this.LoadTours(this.searchVM.SearchText);
         }
     }
 }

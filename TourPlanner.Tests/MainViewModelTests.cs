@@ -15,11 +15,12 @@ public class MainViewModelTests
     public void TestData_ShouldHave4EntriesOnStartup()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel();
+        ToursViewModel toursVM = new ToursViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchViewModel(), toursVM, new TourDetailsViewModel(), new TourLogsViewModel());
 
         // act
         int expectedCount = 4;
-        int actualCount = mainViewModel.Tours.Count;
+        int actualCount = toursVM.Tours.Count;
 
         // assert
         Assert.AreEqual(actualCount, expectedCount);
@@ -29,8 +30,9 @@ public class MainViewModelTests
     public void TestAddCommand_ShouldAddNewEntry()
     {
         // arrange
-        MainViewModel mainViewModel = new MainViewModel();
-        int lastCount = mainViewModel.Tours.Count;
+        ToursViewModel toursVM = new ToursViewModel();
+        MainViewModel mainViewModel = new MainViewModel(new MenuViewModel(), new SearchViewModel(), toursVM, new TourDetailsViewModel(), new TourLogsViewModel());
+        int lastCount = toursVM.Tours.Count;
 
         // act
         //mainViewModel.CurretUsername = "Testname";
@@ -38,10 +40,10 @@ public class MainViewModelTests
         //mainViewModel.AddCommand.Execute(null);
 
         // TODO
-        mainViewModel.Tours.Add(new Tour());
+        toursVM.Tours.Add(new Tour());
 
         // assert
-        Assert.AreEqual(lastCount + 1, mainViewModel.Tours.Count, "There should be one more entry in Tours");
+        Assert.AreEqual(lastCount + 1, toursVM.Tours.Count, "There should be one more entry in Tours");
         // Assert.AreEqual("Testname", mainViewModel.Tours[lastCount+1].Name, "Name is different");
         // Assert.AreEqual("", mainViewModel.CurrentUsername, "Username should be cleared!");
     }
