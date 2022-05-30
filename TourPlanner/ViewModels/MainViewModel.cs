@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -39,6 +40,7 @@ namespace TourPlanner.ViewModels
             this.toursVM.AddEvent += (_, e) => this.AddTour();
             this.toursVM.RemoveEvent += (_, tour) => this.RemoveTour(tour);
             this.toursVM.SelectedEvent += (_, tour) => this.TourSelected(tour);
+            this.menuVM.ExportAsPdfEvent += (_, tour) => this.ExportAsPdf();
         }
         public void LoadTours(string filter = null)
         {
@@ -96,6 +98,35 @@ namespace TourPlanner.ViewModels
         {
             TourController.RemoveItem(tour);
             this.LoadTours(this.searchVM.SearchText);
+        }
+
+        public void SaveTour(Tour tour)
+        {
+            // TODO
+        }
+
+        public void ExportAsPdf()
+        {
+            Debug.Print($"Export tour as PDF");
+
+            SaveFileDialog dia = new SaveFileDialog();
+            dia.FileName = tourDetailsVM.Tour.Name;
+            dia.Filter = "PDF Document (*.pdf)|*.pdf";
+            dia.InitialDirectory = Config["PersistenceFolder"];
+
+            if (dia.ShowDialog() == true)
+            {
+                Debug.Print($"Save as {dia.FileName}");
+
+                if (tourDetailsVM.TourIsSelected)
+                {
+                    var report = new TourReport(tourDetailsVM.Tour, tourLogsVM.TourLog.ToList());
+                    var success = report.ExportToPdf(dia.FileName);
+
+                    if (success) Debug.Print("Export succeeded");
+                    else Debug.Print("Export failed");
+                }
+            }
         }
     }
 }

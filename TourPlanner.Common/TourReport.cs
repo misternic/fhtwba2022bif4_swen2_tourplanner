@@ -84,12 +84,16 @@ public class TourReport
                 .ToTable()
             .ToDocument();
     }
-    
+
     public bool ExportToPdf()
+    {
+        return ExportToPdf(Path.Combine(Config["PersistenceFolder"], $"{Tour.Name}.pdf"));
+    }
+    
+    public bool ExportToPdf(string path)
     {
         try
         {
-            var path = Path.Join(Config["PersistenceFolder"], $"{Tour.Name}.pdf");
             var fileStream = new FileStream(path, FileMode.Create);
 
             var document = DocumentBuilder.New();

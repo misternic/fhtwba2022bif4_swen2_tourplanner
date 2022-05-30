@@ -20,6 +20,10 @@
             <Separator />
             <MenuItem Header="_Exit" />
         </MenuItem>
+        <MenuItem Header="_Tour" IsEnabled="False">
+            <MenuItem Header="_Save" />
+            <MenuItem Header="_Export as PDF" Command="{Binding ExportAsPdfCommand, Mode=OneTime}" />
+        </MenuItem>
         <MenuItem Header="_Edit">
         </MenuItem>
         <MenuItem Header="_Options">

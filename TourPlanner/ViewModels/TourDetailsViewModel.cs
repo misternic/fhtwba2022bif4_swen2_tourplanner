@@ -55,8 +55,6 @@ namespace TourPlanner.ViewModels
         {
             get => Enum.GetValues(typeof(TransportType)).Cast<TransportType>();
         }
-
-        private IConfigurationRoot config = AppSettings.GetInstance().Configuration;
   
         public String ImagePath
         {
@@ -64,7 +62,7 @@ namespace TourPlanner.ViewModels
             {
                 if (_tour == null) return "../images/tour-detail_default.png";
 
-                var path = Path.Combine(config["PersistenceFolder"], $"{_tour.Id}.jpg");
+                var path = Path.Combine(Config["PersistenceFolder"], $"{_tour.Id}.jpg");
 
                 if (!File.Exists(path)) return "../images/tour-detail_default.png";
 
