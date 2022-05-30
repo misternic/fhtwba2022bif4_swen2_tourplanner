@@ -38,7 +38,7 @@ namespace TourPlanner.ViewModels
             this.searchVM.SearchEvent += (_, filter) => this.LoadTours(filter);
             this.toursVM.AddEvent += (_, e) => this.AddTour();
             this.toursVM.RemoveEvent += (_, tour) => this.RemoveTour(tour);
-            this.toursVM.SelectedEvent += (_, tour) => this.LoadTourLogs(tour);
+            this.toursVM.SelectedEvent += (_, tour) => this.TourSelected(tour);
         }
         public void LoadTours(string filter = null)
         {
@@ -57,13 +57,17 @@ namespace TourPlanner.ViewModels
 
         public void TourSelected(Tour tour)
         {
+            Debug.Print($"Tour selected: {tour.Id} {tour.Name}");
+            Debug.Print(tour.ToJson());
+            //Debug.Print(this.tourDetailsVM.ImagePath);
             this.LoadTourDetails(tour);
             this.LoadTourLogs(tour);
+            tourDetailsVM.LoadRouteImageAsync();
         }
 
         public void LoadTourDetails(Tour tour)
         {
-            // TODO
+            tourDetailsVM.Tour = tour;
         }
 
         public void LoadTourLogs(Tour tour)

@@ -6,8 +6,59 @@
              xmlns:local="clr-namespace:TourPlanner.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <Label Content="Tours" />
-        <Image Source="{Binding ImagePath}" />
-    </StackPanel>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="Converter" />
+    </UserControl.Resources>
+    <Grid Visibility="{Binding TourIsSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Converter}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="0" Grid.Column="0">
+            <StackPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Name" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Description" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="From" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.From, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="To" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.To, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="TransportType" />
+                    <ComboBox Margin="5,5,5,5" SelectedItem="{Binding SelectedTransportType, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TransportTypesList}"></ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Distance" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Distance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="EstimatedTime" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.EstimatedTime, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Popularity" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Popularity}" IsEnabled="False"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="ChildFriendlyness" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.ChildFriendlyness}" IsEnabled="False"></TextBox>
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
+
+        <Image Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" />
+    </Grid>
 </UserControl>

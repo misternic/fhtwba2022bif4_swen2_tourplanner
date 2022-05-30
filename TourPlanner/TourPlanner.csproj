@@ -12,6 +12,7 @@
     <None Remove="images\close-box.png" />
     <None Remove="images\pencil.png" />
     <None Remove="images\plus-box.png" />
+    <None Remove="images\tour-detail_default.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
     <Resource Include="images\magnify.png" />
     <Resource Include="images\pencil.png" />
     <Resource Include="images\plus-box.png" />
+    <Resource Include="images\tour-detail_default.png" />
   </ItemGroup>
 
   <ItemGroup>

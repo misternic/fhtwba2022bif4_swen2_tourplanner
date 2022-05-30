@@ -43,7 +43,6 @@ namespace TourPlanner.ViewModels
             {
                 if (SelectedTour != null)
                 {
-                    Debug.Print($"Tour selected: {SelectedTour.Id} {SelectedTour.Name}");
                     this.SelectedEvent?.Invoke(this, SelectedTour);
                 }
             });
