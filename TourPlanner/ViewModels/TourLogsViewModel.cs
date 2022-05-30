@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,14 @@ namespace TourPlanner.ViewModels
             set
             {
                 _tourLog = value;
+                MyCollection = new ObservableCollection<TourLog>(value);
                 OnPropertyChanged(nameof(TourLog));
             }
         }
+
+        public ObservableCollection<TourLog> MyCollection { get; set; } = new ObservableCollection<TourLog>();
+
+
+        public static IEnumerable<Difficulty> GetDifficultyEnumTypes => Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>();
     }
 }

@@ -6,9 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TourPlanner.BL;
 using TourPlanner.Common;
 using TourPlanner.DAL;
+using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
@@ -36,11 +38,16 @@ namespace TourPlanner.ViewModels
         {
             this.LoadTours();
 
+            this.menuVM.AddEvent += (_, e) => this.AddTour();
+            this.menuVM.SaveEvent += (_, e) => this.SaveTour(this.toursVM.SelectedTour);
+            this.menuVM.DeleteEvent += (_, e) => this.RemoveTour(this.toursVM.SelectedTour);
+            this.menuVM.ExportAsPdfEvent += (_, tour) => this.ExportAsPdf(this.toursVM.SelectedTour);
+
             this.searchVM.SearchEvent += (_, filter) => this.LoadTours(filter);
             this.toursVM.AddEvent += (_, e) => this.AddTour();
+            this.tourDetailsVM.SaveEvent += (_, tour) => this.SaveTour(tour);
             this.toursVM.RemoveEvent += (_, tour) => this.RemoveTour(tour);
             this.toursVM.SelectedEvent += (_, tour) => this.TourSelected(tour);
-            this.menuVM.ExportAsPdfEvent += (_, tour) => this.ExportAsPdf();
         }
         public void LoadTours(string filter = null)
         {
@@ -64,7 +71,6 @@ namespace TourPlanner.ViewModels
             //Debug.Print(this.tourDetailsVM.ImagePath);
             this.LoadTourDetails(tour);
             this.LoadTourLogs(tour);
-            tourDetailsVM.LoadRouteImageAsync();
         }
 
         public void LoadTourDetails(Tour tour)
@@ -74,7 +80,12 @@ namespace TourPlanner.ViewModels
 
         public void LoadTourLogs(Tour tour)
         {
-            tourLogsVM.TourLog = TourLogController.GetLogsOfTour(tour.Id);
+            tourLogsVM.MyCollection.Clear();
+
+            foreach (TourLog item in TourLogController.GetLogsOfTour(tour.Id))
+            {
+                this.tourLogsVM.MyCollection.Add(item);
+            }
         }
 
         public void AddTour()
@@ -96,21 +107,36 @@ namespace TourPlanner.ViewModels
 
         public void RemoveTour(Tour tour)
         {
-            TourController.RemoveItem(tour);
-            this.LoadTours(this.searchVM.SearchText);
+            MessageBoxResult result = MessageBox.Show("Click yes if you want to delete the tour.", "TourPlanner", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                TourController.RemoveItem(tour);
+                this.LoadTours(this.searchVM.SearchText);
+            }
         }
 
-        public void SaveTour(Tour tour)
+        public async void SaveTour(Tour tour)
         {
-            // TODO
+            var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
+
+            if (metaData != null)
+            {
+                tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+                tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
+
+                this.TourSelected(tour);
+                TourController.UpdateItem(tour);
+                tourDetailsVM.LoadRouteImageAsync();
+            }
         }
 
-        public void ExportAsPdf()
+        public void ExportAsPdf(Tour tour)
         {
             Debug.Print($"Export tour as PDF");
 
             SaveFileDialog dia = new SaveFileDialog();
-            dia.FileName = tourDetailsVM.Tour.Name;
+            dia.FileName = tour.Name;
             dia.Filter = "PDF Document (*.pdf)|*.pdf";
             dia.InitialDirectory = Config["PersistenceFolder"];
 
@@ -118,14 +144,11 @@ namespace TourPlanner.ViewModels
             {
                 Debug.Print($"Save as {dia.FileName}");
 
-                if (tourDetailsVM.TourIsSelected)
-                {
-                    var report = new TourReport(tourDetailsVM.Tour, tourLogsVM.TourLog.ToList());
-                    var success = report.ExportToPdf(dia.FileName);
+                var report = new TourReport(tourDetailsVM.Tour, tourLogsVM.TourLog.ToList());
+                var success = report.ExportToPdf(dia.FileName);
 
-                    if (success) Debug.Print("Export succeeded");
-                    else Debug.Print("Export failed");
-                }
+                if (success) Debug.Print("Export succeeded");
+                else Debug.Print("Export failed");
             }
         }
     }

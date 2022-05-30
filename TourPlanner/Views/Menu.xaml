@@ -14,14 +14,15 @@
         </Menu.ItemsPanel>
         <!-- underline in Header is key shortcut -->
         <MenuItem Header="_File">
-            <MenuItem Header="_New" />
-            <MenuItem Header="_Open" />
-            <MenuItem Header="_Save" />
+            <MenuItem Header="_Add tour" Command="{Binding AddCommand}" />
+            <MenuItem Header="_Export" />
+            <MenuItem Header="_Import" />
             <Separator />
-            <MenuItem Header="_Exit" />
+            <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
         </MenuItem>
-        <MenuItem Header="_Tour" IsEnabled="False">
-            <MenuItem Header="_Save" />
+        <MenuItem Header="_Tour">
+            <MenuItem Header="_Save" Command="{Binding SaveCommand, Mode=OneTime}" />
+            <MenuItem Header="_Delete tour" Command="{Binding DeleteCommand, Mode=OneTime}" />
             <MenuItem Header="_Export as PDF" Command="{Binding ExportAsPdfCommand, Mode=OneTime}" />
         </MenuItem>
         <MenuItem Header="_Edit">

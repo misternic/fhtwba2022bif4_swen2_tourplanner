@@ -25,6 +25,11 @@ namespace TourPlanner.BL
             return tourRepository.Insert(tour);
         }
 
+        public static bool UpdateItem(Tour tour)
+        {
+            return tourRepository.Update(tour);
+        }
+
         public static bool RemoveItem(Tour tour)
         {
             return tourRepository.Delete(tour.Id);

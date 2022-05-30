@@ -5,8 +5,6 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-03-09 12:19:48 CET
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -99,12 +97,4 @@ ALTER TABLE ONLY public.tours
 --
 
 ALTER TABLE ONLY public.logs
-    ADD CONSTRAINT fk_tour_id FOREIGN KEY (tour_id) REFERENCES public.tours(id);
-
-
--- Completed on 2022-03-09 12:19:48 CET
-
---
--- PostgreSQL database dump complete
---
-
+    ADD CONSTRAINT fk_tour_id FOREIGN KEY (tour_id) REFERENCES public.tours(id) ON DELETE CASCADE;

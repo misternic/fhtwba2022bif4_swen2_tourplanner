@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.Common;
@@ -25,16 +26,8 @@ namespace TourPlanner.ViewModels
             {
                 _tour = value;
                 OnPropertyChanged(nameof(Tour));
-                OnPropertyChanged(nameof(TourIsSelected));
                 OnPropertyChanged(nameof(ImagePath));
                 OnPropertyChanged(nameof(SelectedTransportType));
-            }
-        }
-        public bool TourIsSelected
-        {
-            get
-            {
-                return Tour != null;
             }
         }
 
@@ -42,7 +35,7 @@ namespace TourPlanner.ViewModels
         {
             get
             {
-                if (Tour == null) return TransportType.Bicycle;
+                if (_tour == null) return TransportType.Bicycle;
                 return _tour.TransportType;
             }
             set
@@ -51,11 +44,19 @@ namespace TourPlanner.ViewModels
             }
         }
 
-        public IEnumerable<TransportType> TransportTypesList
+        public static IEnumerable<TransportType> GetTransportTypeEnumTypes => Enum.GetValues(typeof(TransportType)).Cast<TransportType>();
+
+        public ICommand SaveCommand { get; }
+        public event EventHandler<Tour> SaveEvent;
+
+        public TourDetailsViewModel()
         {
-            get => Enum.GetValues(typeof(TransportType)).Cast<TransportType>();
+            SaveCommand = new RelayCommand((_) =>
+            {
+                this.SaveEvent?.Invoke(this, _tour);
+            });
         }
-  
+
         public String ImagePath
         {
             get
