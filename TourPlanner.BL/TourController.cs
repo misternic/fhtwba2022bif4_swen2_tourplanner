@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
 using TourPlanner.DAL;
 using TourPlanner.DAL.Repositories;
 
@@ -10,9 +11,9 @@ namespace TourPlanner.BL
 {
     public class TourController
     {
-        static readonly BaseRepository<Tour> tourRepository = new TourRepository(DbContext.GetInstance());
+        static readonly BaseRepository<TourDto> tourRepository = new TourRepository(DbContext.GetInstance());
 
-        public static IEnumerable<Tour> GetItems(string filter)
+        public static IEnumerable<TourDto> GetItems(string filter)
         {
             if (filter == null || filter == string.Empty)
                 return tourRepository.Get();
@@ -20,19 +21,19 @@ namespace TourPlanner.BL
                 return tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), filter, RegexOptions.IgnoreCase).Success);
         }
 
-        public static bool AddItem(Tour tour)
+        public static bool AddItem(TourDto tourDto)
         {
-            return tourRepository.Insert(tour);
+            return tourRepository.Insert(tourDto);
         }
 
-        public static bool UpdateItem(Tour tour)
+        public static bool UpdateItem(TourDto tourDto)
         {
-            return tourRepository.Update(tour);
+            return tourRepository.Update(tourDto);
         }
 
-        public static bool RemoveItem(Tour tour)
+        public static bool RemoveItem(TourDto tourDto)
         {
-            return tourRepository.Delete(tour.Id);
+            return tourRepository.Delete(tourDto.Id);
         }
     }
 }

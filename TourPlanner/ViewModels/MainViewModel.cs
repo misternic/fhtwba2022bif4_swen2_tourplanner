@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using TourPlanner.BL;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
+using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
 using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
@@ -39,9 +41,9 @@ namespace TourPlanner.ViewModels
             this.LoadTours();
 
             this.menuVM.AddEvent += (_, e) => this.AddTour();
-            this.menuVM.SaveEvent += (_, e) => this.SaveTour(this.toursVM.SelectedTour);
-            this.menuVM.DeleteEvent += (_, e) => this.RemoveTour(this.toursVM.SelectedTour);
-            this.menuVM.ExportAsPdfEvent += (_, tour) => this.ExportAsPdf(this.toursVM.SelectedTour);
+            this.menuVM.SaveEvent += (_, e) => this.SaveTour(this.toursVM.SelectedTourDto);
+            this.menuVM.DeleteEvent += (_, e) => this.RemoveTour(this.toursVM.SelectedTourDto);
+            this.menuVM.ExportAsPdfEvent += (_, tour) => this.ExportAsPdf(this.toursVM.SelectedTourDto);
 
             this.searchVM.SearchEvent += (_, filter) => this.LoadTours(filter);
             this.toursVM.AddEvent += (_, e) => this.AddTour();
@@ -53,7 +55,7 @@ namespace TourPlanner.ViewModels
         {
             this.toursVM.Tours.Clear();
 
-            foreach (Tour item in TourController.GetItems(filter))
+            foreach (TourDto item in TourController.GetItems(filter))
             {
                 this.toursVM.Tours.Add(item);
             }
@@ -64,25 +66,25 @@ namespace TourPlanner.ViewModels
             this.searchVM.SearchText = String.Empty;
         }
 
-        public void TourSelected(Tour tour)
+        public void TourSelected(TourDto tourDto)
         {
-            Debug.Print($"Tour selected: {tour.Id} {tour.Name}");
-            Debug.Print(tour.ToJson());
+            Debug.Print($"Tour selected: {tourDto.Id} {tourDto.Name}");
+            Debug.Print(tourDto.ToJson());
             //Debug.Print(this.tourDetailsVM.ImagePath);
-            this.LoadTourDetails(tour);
-            this.LoadTourLogs(tour);
+            this.LoadTourDetails(tourDto);
+            this.LoadTourLogs(tourDto);
         }
 
-        public void LoadTourDetails(Tour tour)
+        public void LoadTourDetails(TourDto tourDto)
         {
-            tourDetailsVM.Tour = tour;
+            tourDetailsVM.TourDto = tourDto;
         }
 
-        public void LoadTourLogs(Tour tour)
+        public void LoadTourLogs(TourDto tourDto)
         {
             tourLogsVM.MyCollection.Clear();
 
-            foreach (TourLog item in TourLogController.GetLogsOfTour(tour.Id))
+            foreach (TourLogDto item in TourLogController.GetLogsOfTour(tourDto.Id))
             {
                 this.tourLogsVM.MyCollection.Add(item);
             }
@@ -92,7 +94,7 @@ namespace TourPlanner.ViewModels
         {
             Guid newId = Guid.NewGuid();
 
-            Tour t = new Tour();
+            TourDto t = new TourDto();
             t.Id = newId;
             t.Name = "New Tour";
             t.Description = "";
@@ -102,41 +104,41 @@ namespace TourPlanner.ViewModels
 
             this.ClearFilter();
             this.LoadTours();
-            this.toursVM.SelectedTour = this.toursVM.Tours.Where(t => t.Id == newId).Single();
+            this.toursVM.SelectedTourDto = this.toursVM.Tours.Where(t => t.Id == newId).Single();
         }
 
-        public void RemoveTour(Tour tour)
+        public void RemoveTour(TourDto tourDto)
         {
             MessageBoxResult result = MessageBox.Show("Click yes if you want to delete the tour.", "TourPlanner", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
-                TourController.RemoveItem(tour);
+                TourController.RemoveItem(tourDto);
                 this.LoadTours(this.searchVM.SearchText);
             }
         }
 
-        public async void SaveTour(Tour tour)
+        public async void SaveTour(TourDto tourDto)
         {
-            var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
+            var metaData = await MapQuestService.GetRouteMetaData(tourDto.From, tourDto.To, tourDto.TransportType);
 
             if (metaData != null)
             {
-                tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
-                tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
+                tourDto.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+                tourDto.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
 
-                this.TourSelected(tour);
-                TourController.UpdateItem(tour);
+                this.TourSelected(tourDto);
+                TourController.UpdateItem(tourDto);
                 tourDetailsVM.LoadRouteImageAsync();
             }
         }
 
-        public void ExportAsPdf(Tour tour)
+        public void ExportAsPdf(TourDto tourDto)
         {
             Debug.Print($"Export tour as PDF");
 
             SaveFileDialog dia = new SaveFileDialog();
-            dia.FileName = tour.Name;
+            dia.FileName = tourDto.Name;
             dia.Filter = "PDF Document (*.pdf)|*.pdf";
             dia.InitialDirectory = Config["PersistenceFolder"];
 
@@ -144,7 +146,7 @@ namespace TourPlanner.ViewModels
             {
                 Debug.Print($"Save as {dia.FileName}");
 
-                var report = new TourReport(tourDetailsVM.Tour, tourLogsVM.TourLog.ToList());
+                var report = new TourReport(tourDetailsVM.TourDto, tourLogsVM.TourLog.ToList());
                 var success = report.ExportToPdf(dia.FileName);
 
                 if (success) Debug.Print("Export succeeded");

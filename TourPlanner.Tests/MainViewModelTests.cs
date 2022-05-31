@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
 using TourPlanner.ViewModels;
 
 namespace TourPlanner.Tests;
@@ -40,7 +41,7 @@ public class MainViewModelTests
         //mainViewModel.AddCommand.Execute(null);
 
         // TODO
-        toursVM.Tours.Add(new Tour());
+        toursVM.Tours.Add(new TourDto());
 
         // assert
         Assert.AreEqual(lastCount + 1, toursVM.Tours.Count, "There should be one more entry in Tours");

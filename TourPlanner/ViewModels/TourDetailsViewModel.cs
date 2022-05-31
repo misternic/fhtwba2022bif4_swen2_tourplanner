@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
 using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
 
@@ -18,14 +19,14 @@ namespace TourPlanner.ViewModels
 {
     public class TourDetailsViewModel : BaseViewModel
     {
-        private Tour _tour;
-        public Tour Tour
+        private TourDto _tourDto;
+        public TourDto TourDto
         {
-            get => _tour;
+            get => _tourDto;
             set
             {
-                _tour = value;
-                OnPropertyChanged(nameof(Tour));
+                _tourDto = value;
+                OnPropertyChanged(nameof(TourDto));
                 OnPropertyChanged(nameof(ImagePath));
                 OnPropertyChanged(nameof(SelectedTransportType));
             }
@@ -35,25 +36,25 @@ namespace TourPlanner.ViewModels
         {
             get
             {
-                if (_tour == null) return TransportType.Bicycle;
-                return _tour.TransportType;
+                if (_tourDto == null) return TransportType.Bicycle;
+                return _tourDto.TransportType;
             }
             set
             {
-                _tour.TransportType = value;
+                _tourDto.TransportType = value;
             }
         }
 
         public static IEnumerable<TransportType> GetTransportTypeEnumTypes => Enum.GetValues(typeof(TransportType)).Cast<TransportType>();
 
         public ICommand SaveCommand { get; }
-        public event EventHandler<Tour> SaveEvent;
+        public event EventHandler<TourDto> SaveEvent;
 
         public TourDetailsViewModel()
         {
             SaveCommand = new RelayCommand((_) =>
             {
-                this.SaveEvent?.Invoke(this, _tour);
+                this.SaveEvent?.Invoke(this, _tourDto);
             });
         }
 
@@ -61,9 +62,9 @@ namespace TourPlanner.ViewModels
         {
             get
             {
-                if (_tour == null) return "../images/tour-detail_default.png";
+                if (_tourDto == null) return "../images/tour-detail_default.png";
 
-                var path = Path.Combine(Config["PersistenceFolder"], $"{_tour.Id}.jpg");
+                var path = Path.Combine(Config["PersistenceFolder"], $"{_tourDto.Id}.jpg");
 
                 if (!File.Exists(path)) return "../images/tour-detail_default.png";
 
@@ -73,7 +74,7 @@ namespace TourPlanner.ViewModels
 
         public async Task LoadRouteImageAsync()
         {
-            if (await MapQuestService.GetRouteImage(_tour.Id.ToString(), _tour.From, _tour.To))
+            if (await MapQuestService.GetRouteImage(_tourDto.Id.ToString(), _tourDto.From, _tourDto.To))
             {
                 Debug.Print("RouteImage true");
             } else 

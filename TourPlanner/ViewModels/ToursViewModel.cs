@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
@@ -14,36 +15,36 @@ namespace TourPlanner.ViewModels
     public class ToursViewModel : BaseViewModel
     {
 
-        private Tour _selectedTour;
-        public Tour SelectedTour
+        private TourDto _selectedTourDto;
+        public TourDto SelectedTourDto
         {
-            get => _selectedTour;
+            get => _selectedTourDto;
             set
             {
-                _selectedTour = value;
+                _selectedTourDto = value;
                 SelectedCommand.Execute(value);
-                OnPropertyChanged(nameof(SelectedTour));
+                OnPropertyChanged(nameof(SelectedTourDto));
             }
         }
 
-        public ObservableCollection<Tour> Tours { get; set; } = new ObservableCollection<Tour>();
+        public ObservableCollection<TourDto> Tours { get; set; } = new ObservableCollection<TourDto>();
 
         public ICommand SelectedCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand RemoveCommand { get; }
 
 
-        public event EventHandler<Tour> SelectedEvent;
+        public event EventHandler<TourDto> SelectedEvent;
         public event EventHandler AddEvent;
-        public event EventHandler<Tour> RemoveEvent;
+        public event EventHandler<TourDto> RemoveEvent;
 
         public ToursViewModel()
         {
             SelectedCommand = new RelayCommand((_) =>
             {
-                if (SelectedTour != null)
+                if (SelectedTourDto != null)
                 {
-                    this.SelectedEvent?.Invoke(this, SelectedTour);
+                    this.SelectedEvent?.Invoke(this, SelectedTourDto);
                 }
             });
 
@@ -54,8 +55,8 @@ namespace TourPlanner.ViewModels
 
             RemoveCommand = new RelayCommand((_) =>
             {
-                if (SelectedTour != null) 
-                    this.RemoveEvent?.Invoke(this, SelectedTour);
+                if (SelectedTourDto != null) 
+                    this.RemoveEvent?.Invoke(this, SelectedTourDto);
             });
         }
     }

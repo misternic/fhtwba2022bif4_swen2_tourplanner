@@ -3,20 +3,21 @@ using Gehtsoft.PDFFlow.Builder;
 using Gehtsoft.PDFFlow.Models.Enumerations;
 using Gehtsoft.PDFFlow.Models.Shared;
 using Microsoft.Extensions.Configuration;
+using TourPlanner.Common.DTO;
 using TourPlanner.Common.Extensions;
 
-namespace TourPlanner.Common;
+namespace TourPlanner.Common.PDF;
 
 public class TourReport
 {
     private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
     
-    private Tour Tour { get; }
-    private List<TourLog> Logs { get; }
+    private TourDto TourDto { get; }
+    private List<TourLogDto> Logs { get; }
 
-    public TourReport(Tour tour, List<TourLog> logs)
+    public TourReport(TourDto tourDto, List<TourLogDto> logs)
     {
-        Tour = tour;
+        TourDto = tourDto;
         Logs = logs;
     }
 
@@ -33,7 +34,7 @@ public class TourReport
         
         section
             .SetOrientation(PageOrientation.Portrait)
-            .AddHeading($"{Tour.Name} | Logs")
+            .AddHeading($"{TourDto.Name} | Logs")
             .AddTable()
             .SetBorderColor(Color.FromHtml("#c2c2c2"))
                 .SetContentPadding(5)
@@ -59,24 +60,24 @@ public class TourReport
     {
         section
             .SetOrientation(PageOrientation.Portrait)
-            .AddHeading($"{Tour.Name} | Report")
+            .AddHeading($"{TourDto.Name} | Report")
             .AddTable()
             .SetContentPadding(8)
             .SetBorderColor(Color.FromHtml("#c2c2c2"))
             .AddColumnPercentToTable("", 25)
             .AddColumnPercentToTable("", 75)
-                .AddRowFromList(new List<string> {"ID:", Tour.Id.ToString()})
-                .AddRowFromList(new List<string> {"Name:", Tour.Name})
-                .AddRowFromList(new List<string> {"Description:", Tour.Description})
-                .AddRowFromList(new List<string> {"From:", Tour.From})
-                .AddRowFromList(new List<string> {"To:", Tour.To})
-                .AddRowFromList(new List<string> {"Transport:", Tour.TransportType.ToString()})
-                .AddRowFromList(new List<string> {"Distance:", Tour.Distance.ToString(CultureInfo.CurrentCulture)})
-                .AddRowFromList(new List<string> {"Estimated Time:", Tour.EstimatedTime.ToString()})
+                .AddRowFromList(new List<string> {"ID:", TourDto.Id.ToString()})
+                .AddRowFromList(new List<string> {"Name:", TourDto.Name})
+                .AddRowFromList(new List<string> {"Description:", TourDto.Description})
+                .AddRowFromList(new List<string> {"From:", TourDto.From})
+                .AddRowFromList(new List<string> {"To:", TourDto.To})
+                .AddRowFromList(new List<string> {"Transport:", TourDto.TransportType.ToString()})
+                .AddRowFromList(new List<string> {"Distance:", TourDto.Distance.ToString(CultureInfo.CurrentCulture)})
+                .AddRowFromList(new List<string> {"Estimated Time:", TourDto.EstimatedTime.ToString()})
                 .AddRow()
                     .AddCellToRow("Route:")
                     .AddCell()
-                        .AddImage(Path.Join(Config["PersistenceFolder"], $"{Tour.Id}.jpg"))
+                        .AddImage(Path.Join(Config["PersistenceFolder"], $"{TourDto.Id}.jpg"))
                             .SetWidth(400)
                             .SetHeight(400)
                         .ToCell()
@@ -87,7 +88,7 @@ public class TourReport
 
     public bool ExportToPdf()
     {
-        return ExportToPdf(Path.Combine(Config["PersistenceFolder"], $"{Tour.Name}.pdf"));
+        return ExportToPdf(Path.Combine(Config["PersistenceFolder"], $"{TourDto.Name}.pdf"));
     }
     
     public bool ExportToPdf(string path)

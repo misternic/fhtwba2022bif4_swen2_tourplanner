@@ -5,25 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.Common;
+using TourPlanner.Common.DTO;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
 {
     public class TourLogsViewModel : BaseViewModel
     {
-        private IEnumerable<TourLog> _tourLog;
-        public IEnumerable<TourLog> TourLog
+        private IEnumerable<TourLogDto> _tourLog;
+        public IEnumerable<TourLogDto> TourLog
         {
             get => _tourLog;
             set
             {
                 _tourLog = value;
-                MyCollection = new ObservableCollection<TourLog>(value);
+                MyCollection = new ObservableCollection<TourLogDto>(value);
                 OnPropertyChanged(nameof(TourLog));
             }
         }
 
-        public ObservableCollection<TourLog> MyCollection { get; set; } = new ObservableCollection<TourLog>();
+        public ObservableCollection<TourLogDto> MyCollection { get; set; } = new ObservableCollection<TourLogDto>();
 
 
         public static IEnumerable<Difficulty> GetDifficultyEnumTypes => Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>();

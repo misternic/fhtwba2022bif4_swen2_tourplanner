@@ -1,11 +1,13 @@
 ﻿using TourPlanner.Common;
+using TourPlanner.Common.DTO;
+using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
 using TourPlanner.DAL.MapQuest;
 using TourPlanner.DAL.Repositories;
 
 var config = AppSettings.GetInstance().Configuration;
 
-var tour = new Tour
+var tour = new TourDto
 {
     Id = Guid.NewGuid(),
     Name = "Test Tour",
@@ -49,7 +51,7 @@ void TestTourLogRepository()
     context.Init();
     var logRepository = new TourLogRepository(context);
 
-    var log = new TourLog
+    var log = new TourLogDto
     {
         Id = Guid.NewGuid(),
         TourId = tour.Id,
@@ -93,7 +95,7 @@ async Task TestMapQuestRequests()
 // --------------------------------------------
 void TestReportExport()
 {
-    var logs = new List<TourLog>
+    var logs = new List<TourLogDto>
     {
         new()
         {

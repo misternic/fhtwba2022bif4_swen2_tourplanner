@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace TourPlanner.Common;
+namespace TourPlanner.Common.DTO;
 
-public class Tour
+public class TourDto
 {
     public Guid Id { get; set; }
     
