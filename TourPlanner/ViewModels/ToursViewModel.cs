@@ -27,6 +27,11 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        public bool IsSelected
+        {
+            get => _selectedTour != null;
+        }
+
         public ObservableCollection<TourDto> Tours { get; set; } = new ObservableCollection<TourDto>();
 
         public ICommand SelectedCommand { get; }

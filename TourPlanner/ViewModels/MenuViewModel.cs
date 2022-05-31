@@ -16,6 +16,17 @@ namespace TourPlanner.ViewModels
         public ICommand ImportCommand { get; }
         public ICommand SummaryExportAsPdfCommand { get; }
         public ICommand ExitCommand { get; }
+
+        private bool _tourIsSelected = false;
+        public bool TourIsSelected
+        {
+            get => _tourIsSelected;
+            set
+            {
+                _tourIsSelected = value;
+                OnPropertyChanged(nameof(TourIsSelected));
+            }
+        }
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand ExportAsPdfCommand { get; }

@@ -34,11 +34,7 @@ namespace TourPlanner.ViewModels
 
         public TransportType SelectedTransportType
         {
-            get
-            {
-                if (_tour == null) return TransportType.Bicycle;
-                return _tour.TransportType;
-            }
+            get => _tour?.TransportType ?? TransportType.Bicycle;
             set
             {
                 _tour.TransportType = value;

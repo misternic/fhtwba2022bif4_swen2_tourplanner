@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TourPlanner.Common;
 using TourPlanner.Common.DTO;
+using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
 using TourPlanner.DAL.Repositories;
 
@@ -11,7 +12,7 @@ namespace TourPlanner.BL
 {
     public class TourController
     {
-        static readonly BaseRepository<TourDto> tourRepository = new TourRepository(DbContext.GetInstance());
+        static readonly TourRepository tourRepository = new TourRepository(DbContext.GetInstance());
 
         public static IEnumerable<TourDto> GetItems(string filter)
         {
@@ -46,6 +47,18 @@ namespace TourPlanner.BL
         {
             // TODO: get json from file, deserialize and send to database
             return true;
+        }
+
+        public static bool ExportTourAsPdf(string path, TourDto tour, List<TourLogDto> logs)
+        {
+            var report = new TourReport(tour, logs);
+            return report.ExportToPdf(path);
+        }
+
+        public static bool ExportSummaryAsPdf(string path)
+        {
+            var report = new SummaryReport((ICollection<TourSummaryDto>)tourRepository.GetTourSummaries());
+            return report.ExportToPdf(path);
         }
     }
 }

@@ -21,9 +21,10 @@
             <Separator />
             <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
         </MenuItem>
-        <MenuItem Header="_Tour">
-            <MenuItem Header="_Save" Command="{Binding SaveCommand, Mode=OneTime}" />
+        <MenuItem Header="_Tour" IsEnabled="{Binding TourIsSelected}">
+            <MenuItem Header="_Save tour" Command="{Binding SaveCommand, Mode=OneTime}" />
             <MenuItem Header="_Delete tour" Command="{Binding DeleteCommand, Mode=OneTime}" />
+            <Separator />
             <MenuItem Header="_Export as PDF" Command="{Binding ExportAsPdfCommand, Mode=OneTime}" />
         </MenuItem>
         <MenuItem Header="_Edit">
