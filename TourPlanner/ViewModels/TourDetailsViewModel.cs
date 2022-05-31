@@ -19,14 +19,14 @@ namespace TourPlanner.ViewModels
 {
     public class TourDetailsViewModel : BaseViewModel
     {
-        private TourDto _tourDto;
-        public TourDto TourDto
+        private TourDto _tour;
+        public TourDto Tour
         {
-            get => _tourDto;
+            get => _tour;
             set
             {
-                _tourDto = value;
-                OnPropertyChanged(nameof(TourDto));
+                _tour = value;
+                OnPropertyChanged(nameof(Tour));
                 OnPropertyChanged(nameof(ImagePath));
                 OnPropertyChanged(nameof(SelectedTransportType));
             }
@@ -36,12 +36,12 @@ namespace TourPlanner.ViewModels
         {
             get
             {
-                if (_tourDto == null) return TransportType.Bicycle;
-                return _tourDto.TransportType;
+                if (_tour == null) return TransportType.Bicycle;
+                return _tour.TransportType;
             }
             set
             {
-                _tourDto.TransportType = value;
+                _tour.TransportType = value;
             }
         }
 
@@ -54,7 +54,7 @@ namespace TourPlanner.ViewModels
         {
             SaveCommand = new RelayCommand((_) =>
             {
-                this.SaveEvent?.Invoke(this, _tourDto);
+                this.SaveEvent?.Invoke(this, _tour);
             });
         }
 
@@ -62,9 +62,9 @@ namespace TourPlanner.ViewModels
         {
             get
             {
-                if (_tourDto == null) return "../images/tour-detail_default.png";
+                if (_tour == null) return "../images/tour-detail_default.png";
 
-                var path = Path.Combine(Config["PersistenceFolder"], $"{_tourDto.Id}.jpg");
+                var path = Path.Combine(Config["PersistenceFolder"], $"{_tour.Id}.jpg");
 
                 if (!File.Exists(path)) return "../images/tour-detail_default.png";
 
@@ -74,7 +74,7 @@ namespace TourPlanner.ViewModels
 
         public async Task LoadRouteImageAsync()
         {
-            if (await MapQuestService.GetRouteImage(_tourDto.Id.ToString(), _tourDto.From, _tourDto.To))
+            if (await MapQuestService.GetRouteImage(_tour.Id.ToString(), _tour.From, _tour.To))
             {
                 Debug.Print("RouteImage true");
             } else 

@@ -15,15 +15,15 @@ namespace TourPlanner.ViewModels
     public class ToursViewModel : BaseViewModel
     {
 
-        private TourDto _selectedTourDto;
-        public TourDto SelectedTourDto
+        private TourDto _selectedTour;
+        public TourDto SelectedTour
         {
-            get => _selectedTourDto;
+            get => _selectedTour;
             set
             {
-                _selectedTourDto = value;
+                _selectedTour = value;
                 SelectedCommand.Execute(value);
-                OnPropertyChanged(nameof(SelectedTourDto));
+                OnPropertyChanged(nameof(SelectedTour));
             }
         }
 
@@ -42,9 +42,9 @@ namespace TourPlanner.ViewModels
         {
             SelectedCommand = new RelayCommand((_) =>
             {
-                if (SelectedTourDto != null)
+                if (SelectedTour != null)
                 {
-                    this.SelectedEvent?.Invoke(this, SelectedTourDto);
+                    this.SelectedEvent?.Invoke(this, SelectedTour);
                 }
             });
 
@@ -55,8 +55,8 @@ namespace TourPlanner.ViewModels
 
             RemoveCommand = new RelayCommand((_) =>
             {
-                if (SelectedTourDto != null) 
-                    this.RemoveEvent?.Invoke(this, SelectedTourDto);
+                if (SelectedTour != null) 
+                    this.RemoveEvent?.Invoke(this, SelectedTour);
             });
         }
     }

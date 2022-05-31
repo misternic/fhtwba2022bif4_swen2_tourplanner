@@ -12,21 +12,6 @@ namespace TourPlanner.ViewModels
 {
     public class TourLogsViewModel : BaseViewModel
     {
-        private IEnumerable<TourLogDto> _tourLog;
-        public IEnumerable<TourLogDto> TourLog
-        {
-            get => _tourLog;
-            set
-            {
-                _tourLog = value;
-                MyCollection = new ObservableCollection<TourLogDto>(value);
-                OnPropertyChanged(nameof(TourLog));
-            }
-        }
-
-        public ObservableCollection<TourLogDto> MyCollection { get; set; } = new ObservableCollection<TourLogDto>();
-
-
-        public static IEnumerable<Difficulty> GetDifficultyEnumTypes => Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>();
+        public ObservableCollection<TourLogDto> TourLogs { get; set; } = new ObservableCollection<TourLogDto>();
     }
 }

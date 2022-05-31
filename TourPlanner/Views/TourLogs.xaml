@@ -16,7 +16,7 @@
         </ObjectDataProvider>
     </UserControl.Resources>
 
-    <DataGrid ItemsSource="{Binding MyCollection}" AutoGenerateColumns="False" CanUserAddRows="True">
+    <DataGrid ItemsSource="{Binding TourLogs}" AutoGenerateColumns="False" CanUserAddRows="True">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Date" Binding="{Binding Date}" />
             <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />

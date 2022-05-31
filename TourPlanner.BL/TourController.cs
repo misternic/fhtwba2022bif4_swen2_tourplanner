@@ -35,5 +35,17 @@ namespace TourPlanner.BL
         {
             return tourRepository.Delete(tourDto.Id);
         }
+
+        public static bool ExportData(string path)
+        {
+            // TODO: get data from database, serialize, and write to file
+            return true;
+        }
+
+        public static bool ImportData(string path)
+        {
+            // TODO: get json from file, deserialize and send to database
+            return true;
+        }
     }
 }

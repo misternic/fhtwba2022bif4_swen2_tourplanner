@@ -15,8 +15,9 @@
         <!-- underline in Header is key shortcut -->
         <MenuItem Header="_File">
             <MenuItem Header="_Add tour" Command="{Binding AddCommand}" />
-            <MenuItem Header="_Export" />
-            <MenuItem Header="_Import" />
+            <MenuItem Header="_Export data as JSON" Command="{Binding ExportCommand}" />
+            <MenuItem Header="_Import data as JSON" Command="{Binding ImportCommand}" />
+            <MenuItem Header="_Export Summary Report as PDF" Command="{Binding SummaryExportAsPdfCommand}" />
             <Separator />
             <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
         </MenuItem>
