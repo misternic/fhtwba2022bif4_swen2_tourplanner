@@ -3,28 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TourPlanner.Views"
+             xmlns:local="clr-namespace:TourPlanner.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="200">
+    <UserControl.Resources>
+        <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+            <Setter Property="Padding" Value="5" />
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="1,1,1,1">
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Image Source="/images/plus-box.png" Width="18" Height="18" Cursor="Hand">
-                    <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding AddCommand, Mode=OneTime}" />
-                    </Image.InputBindings>
-                </Image>
-
-                <Image Source="/images/close-box.png" Width="18" Height="18" Cursor="Hand">
-                    <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding RemoveCommand, Mode=OneTime}" />
-                    </Image.InputBindings>
-                </Image>
-
-                <Image Source="/images/pencil.png" Width="18" Height="18" />
-            </StackPanel>
-            <Label Content="Tours" FontWeight="Bold" />
-        </DockPanel>
+        <ToolBarTray DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
+            <ToolBar Style="{StaticResource MaterialDesignToolBar}" ClipToBounds="False" ToolBar.OverflowMode="Never">
+                <Label Content="Tours" FontSize="16" FontWeight="Bold" Padding="10,7,40,0"></Label>
+                <Button ToolTip="Add" Content="{materialDesign:PackIcon Kind=PlusCircle}" Command="{Binding AddCommand, Mode=OneTime}" />
+                <Button ToolTip="Delete" Content="{materialDesign:PackIcon Kind=DeleteCircle}" Command="{Binding RemoveCommand, Mode=OneTime}" />
+                <Button ToolTip="Reload" Content="{materialDesign:PackIcon Kind=Reload}" />
+            </ToolBar>
+        </ToolBarTray>
         <ListBox x:Name="tourItems" ItemsSource="{Binding Tours}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTour}" />
     </DockPanel>
 </UserControl>

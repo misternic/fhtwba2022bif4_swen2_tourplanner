@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TourPlanner.Views"
+             xmlns:local="clr-namespace:TourPlanner.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="800">
-    <Menu>
+             d:DesignHeight="50" d:DesignWidth="800">
+
+
+
+    <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="25">
         <Menu.ItemsPanel>
             <ItemsPanelTemplate>
                 <DockPanel HorizontalAlignment="Stretch"/>
@@ -26,10 +29,6 @@
             <MenuItem Header="_Delete tour" Command="{Binding DeleteCommand, Mode=OneTime}" />
             <Separator />
             <MenuItem Header="_Export as PDF" Command="{Binding ExportAsPdfCommand, Mode=OneTime}" />
-        </MenuItem>
-        <MenuItem Header="_Edit">
-        </MenuItem>
-        <MenuItem Header="_Options">
         </MenuItem>
         <MenuItem Header="_Help" HorizontalAlignment="Right">
             <MenuItem Header="_About"/>

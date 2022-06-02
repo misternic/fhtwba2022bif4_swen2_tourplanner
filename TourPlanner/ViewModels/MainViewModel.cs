@@ -1,8 +1,10 @@
-﻿using Microsoft.Win32;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using TourPlanner.BL;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
@@ -44,9 +46,16 @@ namespace TourPlanner.ViewModels
 
             searchViewModel.SearchEvent += (_, filter) => this.LoadTours(filter);
             toursViewModel.AddEvent += (_, e) => this.AddTour();
-            tourDetailsViewModel.SaveEvent += (_, tour) => this.SaveTour(tour);
-            toursViewModel.RemoveEvent += (_, tour) => this.RemoveTour(tour);
+            toursViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
             toursViewModel.SelectedEvent += (_, tour) => this.TourSelected(tour);
+
+            tourDetailsViewModel.SaveEvent += (_, tour) => this.SaveTour(tour);
+            tourDetailsViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
+            tourDetailsViewModel.ExportAsPdfEvent += (_, tour) => this.ExportTourAsPdf(this.toursViewModel.SelectedTour, this.tourLogsViewModel.TourLogs.ToList());
+
+            tourLogsViewModel.AddEvent += (_, e) => this.AddTourLog();
+            tourLogsViewModel.DeleteEvent += (_, tourLog) => this.DeleteTourLog(tourLog);
+            tourLogsViewModel.EditEvent += (_, tourLog) => this.EditTourLog(tourLog);
 
             this.LoadTours();
         }
@@ -134,6 +143,21 @@ namespace TourPlanner.ViewModels
             }
             else
                 MessageBox.Show("Saving tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void AddTourLog()
+        {
+
+        }
+
+        public void DeleteTourLog(TourLogDto tourLog)
+        {
+
+        }
+
+        public void EditTourLog(TourLogDto tourLog)
+        {
+
         }
 
         public void ExportData()

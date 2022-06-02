@@ -17,5 +17,10 @@ namespace TourPlanner.BL
         {
             return tourLogRepository.Get().Where(l => l.TourId == id);
         }
+
+        public bool AddTourLog(TourLogDto tourLog)
+        {
+            return tourLogRepository.Insert(tourLog);
+        }
     }
 }
