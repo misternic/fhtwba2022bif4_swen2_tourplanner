@@ -1,17 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using TourPlanner.Common;
 using TourPlanner.Common.DTO;
+using TourPlanner.Common.Logging;
 using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
 
@@ -19,6 +15,24 @@ namespace TourPlanner.ViewModels
 {
     public class TourDetailsViewModel : BaseViewModel
     {
+        private static ILoggerWrapper logger = LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private Visibility _visibility = Visibility.Hidden;
+        public Visibility Visibility
+        {
+            get
+            {
+                return _visibility;
+            }
+            set
+            {
+                _visibility = value;
+                OnPropertyChanged(nameof(Visibility));
+            }
+        }
+
+
+
         private TourDto _tour;
         public TourDto Tour
         {
@@ -72,10 +86,10 @@ namespace TourPlanner.ViewModels
         {
             if (await MapQuestService.GetRouteImage(_tour.Id.ToString(), _tour.From, _tour.To))
             {
-                Debug.Print("RouteImage true");
+                logger.Debug("RouteImage true");
             } else 
             {
-                Debug.Print("RouteImage false");
+                logger.Debug("RouteImage false");
             }
             OnPropertyChanged(nameof(ImagePath));
         }

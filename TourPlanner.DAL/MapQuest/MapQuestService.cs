@@ -1,10 +1,13 @@
 using Microsoft.Extensions.Configuration;
 using TourPlanner.Common;
+using TourPlanner.Common.Logging;
 
 namespace TourPlanner.DAL.MapQuest;
 
 public static class MapQuestService
 {
+    private static ILoggerWrapper logger = LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
     private static readonly HttpClient Client = new();
     private static readonly IConfigurationRoot Config = AppSettings.GetInstance().Configuration;
     private static readonly Dictionary<TransportType, string> RouteTypes = new()
@@ -42,7 +45,7 @@ public static class MapQuestService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            logger.Error(e.Message);
             return null;
         }
     }
@@ -76,7 +79,7 @@ public static class MapQuestService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            logger.Error(e.Message);
             return false;
         }
     }

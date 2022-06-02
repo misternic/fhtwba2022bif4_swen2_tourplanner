@@ -27,11 +27,11 @@
 
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
-            <Views:TourDetails x:Name="TourDetails" Grid.Row="0" Grid.Column="2" />
+            <Views:TourDetails x:Name="TourDetails" Grid.Row="0" Grid.Column="2" Visibility="{Binding Visibility}" />
             
             <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
-            <Views:TourLogs x:Name="TourLogs" Grid.Row="2" Grid.Column="2" />
+            <Views:TourLogs x:Name="TourLogs" Grid.Row="2" Grid.Column="2" Visibility="{Binding Visibility}" />
         </Grid>
     </DockPanel>
 </Window>

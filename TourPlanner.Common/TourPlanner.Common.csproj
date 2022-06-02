@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Gehtsoft.PDFFlowLib" Version="2.1.1" />
+      <PackageReference Include="log4net" Version="2.0.14" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.1.22076.8" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.1.22076.8" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -17,6 +18,12 @@
       <Content Include="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="log4net.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TourPlanner.ViewModels.Abstract;
 
@@ -16,7 +11,6 @@ namespace TourPlanner.ViewModels
             get => _searchText;
             set
             {
-                Debug.Print(value);
                 _searchText = value;
                 OnPropertyChanged(nameof(SearchText));
             }

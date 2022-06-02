@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using TourPlanner.Common;
+﻿using System.Text.RegularExpressions;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
@@ -20,6 +16,11 @@ namespace TourPlanner.BL
                 return tourRepository.Get();
             else
                 return tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), filter, RegexOptions.IgnoreCase).Success);
+        }
+
+        public static TourDto GetById(Guid id)
+        {
+            return tourRepository.GetById(id);
         }
 
         public static bool AddItem(TourDto tourDto)
