@@ -20,6 +20,7 @@ public class TourLogDto
     
     public TimeSpan Duration { get; set; }
 
+    public DateTime Created { get; set; } = DateTime.Now;
 
     public string ToJson()
     {

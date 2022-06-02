@@ -21,11 +21,13 @@ public class TourDto
     public double Distance { get; set; }
     
     public TimeSpan EstimatedTime { get; set; }
-    
+
+    public DateTime Created { get; set; } = DateTime.Now;
+
     public int? Popularity { get; set; }
-    
+
     public double? ChildFriendlyness { get; set; }
-    
+
     public string ToJson()
     {
         return JsonConvert.SerializeObject(this);

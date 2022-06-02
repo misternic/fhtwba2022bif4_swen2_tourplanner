@@ -12,7 +12,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
     }
 
     private const string Fields =
-        "id, name, description, \"from\", \"to\", transport_type, distance, estimated_duration";
+        "id, name, description, \"from\", \"to\", transport_type, distance, estimated_duration, created";
 
     private static TourDto ReadAsTour(NpgsqlDataReader reader)
     {
@@ -25,7 +25,8 @@ public sealed class TourRepository : BaseRepository<TourDto>
             To = reader.GetString(4),
             TransportType = (TransportType) reader.GetInt32(5),
             Distance = reader.GetDouble(6),
-            EstimatedTime = new TimeSpan(0, 0, reader.GetInt32(7))
+            EstimatedTime = new TimeSpan(0, 0, reader.GetInt32(7)),
+            Created = reader.GetDateTime(8)
         };
     }
 
@@ -45,10 +46,10 @@ public sealed class TourRepository : BaseRepository<TourDto>
 
         var tour = ReadAsTour(reader);
 
-        if (reader.GetInt32(8) > 0)
+        if (reader.GetInt32(9) > 0)
         {
-            tour.Popularity = reader.GetInt32(8);
-            tour.ChildFriendlyness = reader.GetDouble(10) / reader.GetDouble(9);
+            tour.Popularity = reader.GetInt32(9);
+            tour.ChildFriendlyness = reader.GetDouble(11) / reader.GetDouble(10);
         }
 
         reader.Close();
@@ -57,7 +58,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
 
     public override IEnumerable<TourDto> Get()
     {
-        var cmd = new NpgsqlCommand($"SELECT {Fields} FROM tours", Context.Connection, Context.Transaction);
+        var cmd = new NpgsqlCommand($"SELECT {Fields} FROM tours ORDER BY created", Context.Connection, Context.Transaction);
         var tours = new List<TourDto>();
 
         var reader = cmd.ExecuteReader();
@@ -101,7 +102,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
     public override bool Insert(TourDto tourDto)
     {
         var cmd = new NpgsqlCommand(
-            "INSERT INTO tours (id, name, description, \"from\", \"to\", transport_type, distance, estimated_duration) VALUES(@id, @name, @description, @from, @to, @transport_type, @distance, @estimated_duration)",
+            "INSERT INTO tours (id, name, description, \"from\", \"to\", transport_type, distance, estimated_duration, created) VALUES(@id, @name, @description, @from, @to, @transport_type, @distance, @estimated_duration, @created)",
             Context.Connection, Context.Transaction);
         cmd.Parameters.AddWithValue("id", tourDto.Id);
         cmd.Parameters.AddWithValue("name", tourDto.Name);
@@ -111,6 +112,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
         cmd.Parameters.AddWithValue("transport_type", (int) tourDto.TransportType);
         cmd.Parameters.AddWithValue("distance", tourDto.Distance);
         cmd.Parameters.AddWithValue("estimated_duration", tourDto.EstimatedTime.TotalSeconds);
+        cmd.Parameters.AddWithValue("created", tourDto.Created);
 
         if (cmd.ExecuteNonQuery() == 1)
         {
@@ -125,7 +127,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
     public override bool Update(TourDto tourDto)
     {
         var cmd = new NpgsqlCommand(
-            "UPDATE tours SET name=@name, description=@description, \"from\"=@from, \"to\"=@to, transport_type=@transport_type, distance=@distance, estimated_duration=@estimated_duration WHERE id=@id",
+            "UPDATE tours SET name=@name, description=@description, \"from\"=@from, \"to\"=@to, transport_type=@transport_type, distance=@distance, estimated_duration=@estimated_duration, created=@created WHERE id=@id",
             Context.Connection, Context.Transaction);
         cmd.Parameters.AddWithValue("id", tourDto.Id);
         cmd.Parameters.AddWithValue("name", tourDto.Name);
@@ -135,6 +137,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
         cmd.Parameters.AddWithValue("transport_type", (int) tourDto.TransportType);
         cmd.Parameters.AddWithValue("distance", tourDto.Distance);
         cmd.Parameters.AddWithValue("estimated_duration", tourDto.EstimatedTime.TotalSeconds);
+        cmd.Parameters.AddWithValue("created", tourDto.Created);
 
         if (cmd.ExecuteNonQuery() == 1)
         {
