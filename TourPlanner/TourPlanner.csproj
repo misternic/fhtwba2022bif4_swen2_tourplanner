@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TourPlanner.BL\TourPlanner.BL.csproj" />
     <ProjectReference Include="..\TourPlanner.Common\TourPlanner.Common.csproj" />
-    <ProjectReference Include="..\TourPlanner.DAL\TourPlanner.DAL.csproj" />
   </ItemGroup>
 
 </Project>

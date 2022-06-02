@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using TourPlanner.Common.DTO;
 using TourPlanner.ViewModels.Abstract;
@@ -57,6 +58,16 @@ namespace TourPlanner.ViewModels
                 if (SelectedTour != null) 
                     this.RemoveEvent?.Invoke(this, SelectedTour);
             });
+        }
+
+        public void SelectTour(Guid id)
+        {
+            SelectedTour = Tours.Where(t => t.Id == id).Single();
+        }
+        public void SelectTourWithoutEvent(Guid id)
+        {
+            _selectedTour = Tours.Where(t => t.Id == id).Single();
+            OnPropertyChanged(nameof(SelectedTour));
         }
     }
 }

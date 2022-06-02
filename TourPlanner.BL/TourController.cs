@@ -2,6 +2,7 @@
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
+using TourPlanner.DAL.MapQuest;
 using TourPlanner.DAL.Repositories;
 
 namespace TourPlanner.BL
@@ -28,14 +29,28 @@ namespace TourPlanner.BL
             return tourRepository.Insert(tourDto);
         }
 
-        public static bool UpdateItem(TourDto tourDto)
+        public static async Task<bool> UpdateItem(TourDto tour)
         {
-            return tourRepository.Update(tourDto);
+            var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
+
+            if (metaData == null) return false;
+
+            tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
+            tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
+
+            await GetRouteImage(tour);
+
+            return tourRepository.Update(tour);
         }
 
         public static bool RemoveItem(TourDto tourDto)
         {
             return tourRepository.Delete(tourDto.Id);
+        }
+
+        public static async Task<bool> GetRouteImage(TourDto tour)
+        {
+            return await MapQuestService.GetRouteImage(tour.Id.ToString(), tour.From, tour.To);
         }
 
         public static bool ExportData(string path)

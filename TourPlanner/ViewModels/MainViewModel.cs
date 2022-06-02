@@ -6,7 +6,6 @@ using System.Windows;
 using TourPlanner.BL;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
-using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
@@ -68,17 +67,26 @@ namespace TourPlanner.ViewModels
 
         public void TourSelected(TourDto tour)
         {
-            var tourDB = TourController.GetById(tour.Id);
-
-            logger.Debug($"Tour selected: {tourDB.Id} {tourDB.Name}");
-            logger.Debug(tourDB.ToJson());
+            logger.Debug($"Tour selected: {tour.Id} {tour.Name}");
 
             menuViewModel.TourIsSelected = true;
-            tourDetailsViewModel.Visibility = Visibility.Visible;
-            tourLogsViewModel.Visibility = Visibility.Visible;
 
-            tourDetailsViewModel.Tour = tourDB;
-            tourLogsViewModel.LoadTourLogs(TourLogController.GetLogsOfTour(tourDB.Id));
+            LoadTourDetails(tour.Id);
+            LoadTourLogs(tour.Id);
+        }
+
+        public void LoadTourDetails(Guid id)
+        {
+            var tour = TourController.GetById(id);
+            tourDetailsViewModel.Tour = tour;
+            tourDetailsViewModel.Visibility = Visibility.Visible;
+        }
+
+        public void LoadTourLogs(Guid id)
+        {
+            var tourLogs = TourLogController.GetLogsOfTour(id);
+            tourLogsViewModel.LoadTourLogs(tourLogs);
+            tourLogsViewModel.Visibility = Visibility.Visible;
         }
 
         public void TourDeselected()
@@ -92,7 +100,7 @@ namespace TourPlanner.ViewModels
         {
             Guid newId = Guid.NewGuid();
 
-            TourDto t = new TourDto()
+            TourDto newtour = new TourDto()
             {
                 Id = newId,
                 Name = "New Tour",
@@ -100,11 +108,12 @@ namespace TourPlanner.ViewModels
                 From = "",
                 To = ""
             };
-            TourController.AddItem(t);
+            TourController.AddItem(newtour);
 
             ClearFilter();
             LoadTours();
-            toursViewModel.SelectedTour = this.toursViewModel.Tours.Where(t => t.Id == newId).Single();
+            LoadTourDetails(newtour.Id);
+            toursViewModel.SelectTourWithoutEvent(newtour.Id);
         }
 
         public void RemoveTour(TourDto tour)
@@ -121,22 +130,10 @@ namespace TourPlanner.ViewModels
 
         public async void SaveTour(TourDto tour)
         {
-            var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
-
-
-
-
-            if (metaData != null)
-            {
-                tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
-                tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
-
-                TourController.UpdateItem(tour);
-                LoadTours();
-                TourSelected(tour);
-                await tourDetailsViewModel.LoadRouteImageAsync();
-                toursViewModel.SelectedTour = this.toursViewModel.Tours.Where(t => t.Id == tour.Id).Single();
-            }
+            await TourController.UpdateItem(tour);
+            LoadTours();
+            LoadTourDetails(tour.Id);
+            toursViewModel.SelectTourWithoutEvent(tour.Id);
         }
 
         public void ExportData()

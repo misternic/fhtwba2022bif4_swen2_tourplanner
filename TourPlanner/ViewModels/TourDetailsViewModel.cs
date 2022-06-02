@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using TourPlanner.BL;
 using TourPlanner.Common;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
-using TourPlanner.DAL.MapQuest;
 using TourPlanner.ViewModels.Abstract;
 
 namespace TourPlanner.ViewModels
@@ -80,18 +80,6 @@ namespace TourPlanner.ViewModels
 
                 return path;
             }
-        }
-
-        public async Task LoadRouteImageAsync()
-        {
-            if (await MapQuestService.GetRouteImage(_tour.Id.ToString(), _tour.From, _tour.To))
-            {
-                logger.Debug("RouteImage true");
-            } else 
-            {
-                logger.Debug("RouteImage false");
-            }
-            OnPropertyChanged(nameof(ImagePath));
         }
     }
 }
