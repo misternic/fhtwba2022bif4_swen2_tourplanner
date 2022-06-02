@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.1.22076.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>

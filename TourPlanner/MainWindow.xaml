@@ -4,21 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Views="clr-namespace:TourPlanner.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Normal"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Tour-Planner" Height="650" Width="1000">
+        Title="Tour-Planner" Height="800" Width="1000">
     <DockPanel>
         <Views:Menu x:Name="Menu" DockPanel.Dock="Top" />
 
         <Views:Search x:Name="Search" DockPanel.Dock="Top" />
-        
+
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="100"></ColumnDefinition>
+                <ColumnDefinition Width="50*" MinWidth="100"></ColumnDefinition>
                 <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition Width="200*" MinWidth="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="400"></RowDefinition>
+                <RowDefinition Height="500*"></RowDefinition>
                 <RowDefinition Height="5"></RowDefinition>
                 <RowDefinition Height="200*"></RowDefinition>
             </Grid.RowDefinitions>
@@ -28,7 +34,7 @@
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
             <Views:TourDetails x:Name="TourDetails" Grid.Row="0" Grid.Column="2" Visibility="{Binding Visibility}" />
-            
+
             <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
             <Views:TourLogs x:Name="TourLogs" Grid.Row="2" Grid.Column="2" Visibility="{Binding Visibility}" />

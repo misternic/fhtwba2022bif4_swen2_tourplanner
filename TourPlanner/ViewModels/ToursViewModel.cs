@@ -37,7 +37,7 @@ namespace TourPlanner.ViewModels
 
         public event EventHandler<TourDto> SelectedEvent;
         public event EventHandler AddEvent;
-        public event EventHandler<TourDto> RemoveEvent;
+        public event EventHandler<TourDto> DeleteEvent;
 
         public ToursViewModel()
         {
@@ -57,7 +57,7 @@ namespace TourPlanner.ViewModels
             RemoveCommand = new RelayCommand((_) =>
             {
                 if (SelectedTour != null) 
-                    this.RemoveEvent?.Invoke(this, SelectedTour);
+                    this.DeleteEvent?.Invoke(this, SelectedTour);
             });
         }
 

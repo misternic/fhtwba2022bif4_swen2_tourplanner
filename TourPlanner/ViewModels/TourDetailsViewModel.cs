@@ -60,13 +60,26 @@ namespace TourPlanner.ViewModels
         public static IEnumerable<TransportType> GetTransportTypeEnumTypes => Enum.GetValues(typeof(TransportType)).Cast<TransportType>();
 
         public ICommand SaveCommand { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand ExportAsPdfCommand { get; }
+
         public event EventHandler<TourDto> SaveEvent;
+        public event EventHandler<TourDto> DeleteEvent;
+        public event EventHandler<TourDto> ExportAsPdfEvent;
 
         public TourDetailsViewModel()
         {
             SaveCommand = new RelayCommand((_) =>
             {
                 this.SaveEvent?.Invoke(this, _tour);
+            });
+            DeleteCommand = new RelayCommand((_) =>
+            {
+                this.DeleteEvent?.Invoke(this, _tour);
+            });
+            ExportAsPdfCommand = new RelayCommand((_) =>
+            {
+                this.ExportAsPdfEvent?.Invoke(this, _tour);
             });
         }
 

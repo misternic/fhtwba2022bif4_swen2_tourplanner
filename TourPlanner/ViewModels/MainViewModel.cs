@@ -1,8 +1,10 @@
-﻿using Microsoft.Win32;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using TourPlanner.BL;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
@@ -44,9 +46,12 @@ namespace TourPlanner.ViewModels
 
             searchViewModel.SearchEvent += (_, filter) => this.LoadTours(filter);
             toursViewModel.AddEvent += (_, e) => this.AddTour();
-            tourDetailsViewModel.SaveEvent += (_, tour) => this.SaveTour(tour);
-            toursViewModel.RemoveEvent += (_, tour) => this.RemoveTour(tour);
+            toursViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
             toursViewModel.SelectedEvent += (_, tour) => this.TourSelected(tour);
+
+            tourDetailsViewModel.SaveEvent += (_, tour) => this.SaveTour(tour);
+            tourDetailsViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
+            tourDetailsViewModel.ExportAsPdfEvent += (_, tour) => this.ExportTourAsPdf(this.toursViewModel.SelectedTour, this.tourLogsViewModel.TourLogs.ToList());
 
             this.LoadTours();
         }
