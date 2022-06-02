@@ -9,18 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="images\close-box.png" />
-    <None Remove="images\pencil.png" />
-    <None Remove="images\plus-box.png" />
-    <None Remove="images\tour-detail_default.png" />
+    <None Remove="Images\close-box.png" />
+    <None Remove="Images\pencil.png" />
+    <None Remove="Images\plus-box.png" />
+    <None Remove="Images\tour-detail_default.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="images\close-box.png" />
-    <Resource Include="images\magnify.png" />
-    <Resource Include="images\pencil.png" />
-    <Resource Include="images\plus-box.png" />
-    <Resource Include="images\tour-detail_default.png" />
+    <Resource Include="Images\close-box.png" />
+    <Resource Include="Images\magnify.png" />
+    <Resource Include="Images\pencil.png" />
+    <Resource Include="Images\plus-box.png" />
+    <Resource Include="Images\tour-detail_default.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using TourPlanner.BL;
 using TourPlanner.Common;
 using TourPlanner.Common.DTO;
@@ -41,7 +43,7 @@ namespace TourPlanner.ViewModels
             {
                 _tour = value;
                 OnPropertyChanged(nameof(Tour));
-                OnPropertyChanged(nameof(ImagePath));
+                OnPropertyChanged(nameof(RouteImage));
                 OnPropertyChanged(nameof(SelectedTransportType));
             }
         }
@@ -68,17 +70,30 @@ namespace TourPlanner.ViewModels
             });
         }
 
-        public String ImagePath
+        public BitmapImage RouteImage
         {
             get
             {
-                if (_tour == null) return "../images/tour-detail_default.png";
+                var path = Path.Combine(Config["PersistenceFolder"], $"{_tour?.Id}.jpg");
 
-                var path = Path.Combine(Config["PersistenceFolder"], $"{_tour.Id}.jpg");
+                if (_tour == null || !File.Exists(path.ToString()))
+                    return new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Images/tour-detail_default.png", UriKind.Absolute));
 
-                if (!File.Exists(path)) return "../images/tour-detail_default.png";
+                return LoadBitmapImage(path);
+            }
+        }
 
-                return path;
+        public static BitmapImage LoadBitmapImage(string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Open))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze(); 
+                return bitmapImage;
             }
         }
     }

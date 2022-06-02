@@ -59,11 +59,15 @@
                     <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="ChildFriendlyness" />
                     <TextBox Margin="5,5,5,5" Text="{Binding Tour.ChildFriendlyness}" IsEnabled="False" VerticalContentAlignment="Center" />
                 </DockPanel>
+                <DockPanel>
+                    <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Created" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Created, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" VerticalContentAlignment="Center" />
+                </DockPanel>
             </StackPanel>
         </ScrollViewer>
 
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></GridSplitter>
 
-        <Image Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" />
+        <Image Source="{Binding RouteImage, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" />
     </Grid>
 </UserControl>
