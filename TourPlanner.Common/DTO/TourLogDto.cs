@@ -21,8 +21,8 @@ public class TourLogDto
     public TimeSpan Duration { get; set; }
 
     public DateTime Created { get; set; } = DateTime.Now;
-    
-    public float? Temperature { get; set; }
+
+    public float? Temperature { get; set; } = null;
 
     public string ToJson()
     {

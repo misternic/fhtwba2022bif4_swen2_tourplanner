@@ -6,6 +6,7 @@ using TourPlanner.Common;
 using TourPlanner.Common.DTO;
 using TourPlanner.DAL;
 using TourPlanner.DAL.Repositories;
+using TourPlanner.DAL.WeatherApi;
 
 namespace TourPlanner.BL
 {
@@ -18,8 +19,13 @@ namespace TourPlanner.BL
             return tourLogRepository.Get().Where(l => l.TourId == id);
         }
 
-        public bool AddTourLog(TourLogDto tourLog)
+        public static async Task<bool> AddTourLogAsync(TourLogDto tourLog)
         {
+            var tour = TourController.GetById(tourLog.TourId);
+
+            if (!String.IsNullOrWhiteSpace(tour.To))
+                tourLog.Temperature = await WeatherApiService.GetTemperatureAtDateAsync(tour.To, tourLog.Date);
+
             return tourLogRepository.Insert(tourLog);
         }
     }

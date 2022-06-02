@@ -24,7 +24,7 @@ public sealed class TourLogRepository : BaseRepository<TourLogDto>
             Rating = reader.GetInt32(5),
             Comment = reader.GetString(6),
             Created = reader.GetDateTime(7),
-            Temperature = reader.GetFloat(8),
+            Temperature = reader.IsDBNull(8) ? null : reader.GetFloat(8),
         };
     }
     
@@ -68,11 +68,7 @@ public sealed class TourLogRepository : BaseRepository<TourLogDto>
         cmd.Parameters.AddWithValue("rating", logDto.Rating);
         cmd.Parameters.AddWithValue("comment", logDto.Comment);
         cmd.Parameters.AddWithValue("created", logDto.Created);
-
-        if (logDto.Temperature != null)
-        {
-            cmd.Parameters.AddWithValue("temperature", logDto.Temperature);
-        }
+        cmd.Parameters.AddWithValue("temperature", logDto.Temperature != null ? logDto.Temperature : DBNull.Value);
 
         if (cmd.ExecuteNonQuery() == 1)
         {
@@ -94,11 +90,7 @@ public sealed class TourLogRepository : BaseRepository<TourLogDto>
         cmd.Parameters.AddWithValue("rating", logDto.Rating);
         cmd.Parameters.AddWithValue("comment", logDto.Comment);
         cmd.Parameters.AddWithValue("created", logDto.Created);
-
-        if (logDto.Temperature != null)
-        {
-            cmd.Parameters.AddWithValue("temperature", logDto.Temperature);
-        }
+        cmd.Parameters.AddWithValue("temperature", logDto.Temperature != null ? logDto.Temperature : DBNull.Value);
 
         if (cmd.ExecuteNonQuery() == 1)
         {

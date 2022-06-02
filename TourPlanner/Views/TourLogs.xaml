@@ -36,6 +36,7 @@
                 <DataGridComboBoxColumn Header="Difficulty"
                     SelectedItemBinding="{Binding Difficulty, Mode=TwoWay}"  
                     ItemsSource="{Binding Source={StaticResource DifficultyProvider}}" />
+                <DataGridTextColumn Header="Temperature" Binding="{Binding Temperature}" />
                 <DataGridTextColumn Header="Comment" Width="*" Binding="{Binding Comment}" />
             </DataGrid.Columns>
         </DataGrid>

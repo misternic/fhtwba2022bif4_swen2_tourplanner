@@ -145,9 +145,20 @@ namespace TourPlanner.ViewModels
                 MessageBox.Show("Saving tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        public void AddTourLog()
+        public async void AddTourLog()
         {
+            Guid newId = Guid.NewGuid();
 
+            TourLogDto newTourLog = new TourLogDto()
+            {
+                Id = newId,
+                TourId = toursViewModel.SelectedTour.Id,
+                Date = new DateOnly(2022, 06, 02),
+                Difficulty = Common.Difficulty.Medium,
+                Comment = "Test"
+            };
+
+            await TourLogController.AddTourLogAsync(newTourLog);
         }
 
         public void DeleteTourLog(TourLogDto tourLog)
