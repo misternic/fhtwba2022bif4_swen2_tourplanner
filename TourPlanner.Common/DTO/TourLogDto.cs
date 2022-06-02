@@ -19,4 +19,15 @@ public class TourLogDto
     public Difficulty Difficulty { get; set; }
     
     public TimeSpan Duration { get; set; }
+
+
+    public string ToJson()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
+
+    public override string ToString()
+    {
+        return ToJson();
+    }
 }

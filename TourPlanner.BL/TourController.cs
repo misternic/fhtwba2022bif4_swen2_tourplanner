@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using TourPlanner.Common.DTO;
+using TourPlanner.Common.Logging;
 using TourPlanner.Common.PDF;
 using TourPlanner.DAL;
 using TourPlanner.DAL.MapQuest;
@@ -9,6 +10,8 @@ namespace TourPlanner.BL
 {
     public class TourController
     {
+        protected static ILoggerWrapper logger = LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly TourRepository tourRepository = new TourRepository(DbContext.GetInstance());
 
         public static IEnumerable<TourDto> GetItems(string filter)
@@ -16,7 +19,7 @@ namespace TourPlanner.BL
             if (filter == null || filter == string.Empty)
                 return tourRepository.Get();
             else
-                return tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson(), filter, RegexOptions.IgnoreCase).Success);
+                return tourRepository.Get().ToList().Where(t => Regex.Match(t.ToJson() + string.Join("", TourLogController.GetLogsOfTour(t.Id)), filter, RegexOptions.IgnoreCase).Success);
         }
 
         public static TourDto GetById(Guid id)

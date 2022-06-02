@@ -21,7 +21,7 @@
             <Button Margin="5,5,5,5" Content="Save" Command="{Binding SaveCommand, Mode=OneTime}" />
         </DockPanel>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Grid.Column="0">
             <StackPanel>
                 <DockPanel>
                     <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Name" />

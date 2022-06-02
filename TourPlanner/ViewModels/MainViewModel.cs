@@ -52,12 +52,7 @@ namespace TourPlanner.ViewModels
         }
         public void LoadTours(string filter = null)
         {
-            toursViewModel.Tours.Clear();
-
-            foreach (TourDto item in TourController.GetItems(filter))
-            {
-                toursViewModel.Tours.Add(item);
-            }
+            toursViewModel.LoadTours(TourController.GetItems(filter));
         }
 
         public void ClearFilter()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -58,6 +59,16 @@ namespace TourPlanner.ViewModels
                 if (SelectedTour != null) 
                     this.RemoveEvent?.Invoke(this, SelectedTour);
             });
+        }
+
+        public void LoadTours(IEnumerable<TourDto> tours)
+        {
+            Tours.Clear();
+
+            foreach (TourDto item in tours)
+            {
+                Tours.Add(item);
+            }
         }
 
         public void SelectTour(Guid id)

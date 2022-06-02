@@ -30,4 +30,9 @@ public class TourDto
     {
         return JsonConvert.SerializeObject(this);
     }
+
+    public override string ToString()
+    {
+        return ToJson();
+    }
 }
