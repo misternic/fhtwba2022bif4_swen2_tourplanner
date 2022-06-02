@@ -12,14 +12,18 @@
         </Style>
     </UserControl.Resources>
     <DockPanel>
-        <ToolBarTray DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
-            <ToolBar Style="{StaticResource MaterialDesignToolBar}" ClipToBounds="False" ToolBar.OverflowMode="Never">
+        <Grid DockPanel.Dock="Top" >
+            <WrapPanel Panel.ZIndex="1000">
                 <Label Content="Tours" FontSize="16" FontWeight="Bold" Padding="10,7,40,0"></Label>
-                <Button ToolTip="Add" Content="{materialDesign:PackIcon Kind=PlusCircle}" Command="{Binding AddCommand, Mode=OneTime}" />
-                <Button ToolTip="Delete" Content="{materialDesign:PackIcon Kind=DeleteCircle}" Command="{Binding RemoveCommand, Mode=OneTime}" />
-                <Button ToolTip="Reload" Content="{materialDesign:PackIcon Kind=Reload}" />
-            </ToolBar>
-        </ToolBarTray>
+            </WrapPanel>
+            <ToolBarTray ToolBarTray.IsLocked="True" FlowDirection="RightToLeft">
+                <ToolBar Style="{StaticResource MaterialDesignToolBar}" ClipToBounds="False" ToolBar.OverflowMode="Never">
+                    <Button ToolTip="Reload" Content="{materialDesign:PackIcon Kind=Reload}" />
+                    <Button ToolTip="Delete" Content="{materialDesign:PackIcon Kind=DeleteCircle}" Command="{Binding RemoveCommand, Mode=OneTime}" />
+                    <Button ToolTip="Add" Content="{materialDesign:PackIcon Kind=PlusCircle}" Command="{Binding AddCommand, Mode=OneTime}" />
+                </ToolBar>
+            </ToolBarTray>
+        </Grid>
         <ListBox x:Name="tourItems" ItemsSource="{Binding Tours}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTour}" />
     </DockPanel>
 </UserControl>

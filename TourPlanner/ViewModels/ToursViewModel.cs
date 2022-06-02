@@ -23,21 +23,18 @@ namespace TourPlanner.ViewModels
             }
         }
 
-        public bool IsSelected
-        {
-            get => _selectedTour != null;
-        }
-
         public ObservableCollection<TourDto> Tours { get; set; } = new ObservableCollection<TourDto>();
 
         public ICommand SelectedCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand RemoveCommand { get; }
+        public ICommand ReloadCommand { get; }
 
 
         public event EventHandler<TourDto> SelectedEvent;
         public event EventHandler AddEvent;
         public event EventHandler<TourDto> DeleteEvent;
+        public event EventHandler ReloadEvent;
 
         public ToursViewModel()
         {
@@ -58,6 +55,14 @@ namespace TourPlanner.ViewModels
             {
                 if (SelectedTour != null) 
                     this.DeleteEvent?.Invoke(this, SelectedTour);
+            }, (_) =>
+            {
+                return _selectedTour != null;
+            });
+
+            ReloadCommand = new RelayCommand((_) =>
+            {
+                this.ReloadEvent?.Invoke(this, EventArgs.Empty);
             });
         }
 

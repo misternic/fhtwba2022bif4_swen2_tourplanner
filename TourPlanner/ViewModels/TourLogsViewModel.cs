@@ -26,6 +26,17 @@ namespace TourPlanner.ViewModels
 
         public ObservableCollection<TourLogDto> TourLogs { get; set; } = new ObservableCollection<TourLogDto>();
 
+        private TourLogDto _selectedTourLog;
+        public TourLogDto SelectedTourLog
+        {
+            get => _selectedTourLog;
+            set
+            {
+                _selectedTourLog = value;
+                OnPropertyChanged(nameof(SelectedTourLog));
+            }
+        }
+
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditComand { get; }
@@ -42,11 +53,18 @@ namespace TourPlanner.ViewModels
             });
             DeleteCommand = new RelayCommand((_) =>
             {
-                this.DeleteEvent?.Invoke(this, new TourLogDto());
+                if (_selectedTourLog == null) return;
+                this.DeleteEvent?.Invoke(this, _selectedTourLog);
+            }, (_) =>
+            {
+                return _selectedTourLog != null;
             });
             EditComand = new RelayCommand((_) =>
             {
-                this.EditEvent?.Invoke(this, new TourLogDto());
+                this.EditEvent?.Invoke(this, _selectedTourLog);
+            }, (_) =>
+            {
+                return _selectedTourLog != null;
             });
         }
 

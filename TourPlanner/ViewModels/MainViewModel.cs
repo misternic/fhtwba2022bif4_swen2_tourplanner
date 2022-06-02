@@ -3,12 +3,14 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TourPlanner.BL;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
 using TourPlanner.ViewModels.Abstract;
+using TourPlanner.Views;
 
 namespace TourPlanner.ViewModels
 {
@@ -45,9 +47,11 @@ namespace TourPlanner.ViewModels
             menuViewModel.ExportAsPdfEvent += (_, tour) => this.ExportTourAsPdf(this.toursViewModel.SelectedTour, this.tourLogsViewModel.TourLogs.ToList());
 
             searchViewModel.SearchEvent += (_, filter) => this.LoadTours(filter);
+
             toursViewModel.AddEvent += (_, e) => this.AddTour();
             toursViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
             toursViewModel.SelectedEvent += (_, tour) => this.TourSelected(tour);
+            toursViewModel.ReloadEvent += (_, e) => this.LoadTours();
 
             tourDetailsViewModel.SaveEvent += (_, tour) => this.SaveTour(tour);
             tourDetailsViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
@@ -117,14 +121,15 @@ namespace TourPlanner.ViewModels
             ClearFilter();
             LoadTours();
             LoadTourDetails(newtour.Id);
+            LoadTourLogs(newtour.Id);
             toursViewModel.SelectTourWithoutEvent(newtour.Id);
         }
 
-        public void RemoveTour(TourDto tour)
+        public async void RemoveTour(TourDto tour)
         {
-            MessageBoxResult result = MessageBox.Show("Click yes if you want to delete the tour.", "TourPlanner", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            object dialogResult = await DialogHost.Show(new TextBlock { Text = "Click yes if you want to delete the tour" }, "YesNoDialog");
 
-            if (result == MessageBoxResult.Yes)
+            if (dialogResult is bool boolResult && boolResult)
             {
                 TourController.RemoveItem(tour);
                 this.LoadTours(this.searchViewModel.SearchText);
@@ -159,16 +164,20 @@ namespace TourPlanner.ViewModels
             };
 
             await TourLogController.AddTourLogAsync(newTourLog);
+            LoadTourDetails(toursViewModel.SelectedTour.Id);
+            LoadTourLogs(toursViewModel.SelectedTour.Id);
         }
 
         public void DeleteTourLog(TourLogDto tourLog)
         {
-
+            TourLogController.DeleteTourLog(tourLog);
+            LoadTourDetails(toursViewModel.SelectedTour.Id);
+            LoadTourLogs(toursViewModel.SelectedTour.Id);
         }
 
-        public void EditTourLog(TourLogDto tourLog)
+        public async void EditTourLog(TourLogDto tourLog)
         {
-
+            await DialogHost.Show(tourLog, "TourLogDialog");
         }
 
         public void ExportData()

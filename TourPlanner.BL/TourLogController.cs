@@ -28,5 +28,14 @@ namespace TourPlanner.BL
 
             return tourLogRepository.Insert(tourLog);
         }
+        public static bool UpdateTourLog(TourLogDto tourLog)
+        {
+            return tourLogRepository.Update(tourLog);
+        }
+
+        public static bool DeleteTourLog(TourLogDto tourLog)
+        {
+            return tourLogRepository.Delete(tourLog.Id);
+        }
     }
 }
