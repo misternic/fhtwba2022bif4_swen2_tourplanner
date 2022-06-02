@@ -34,6 +34,14 @@ namespace TourPlanner.BL
 
         public static async Task<bool> UpdateItem(TourDto tour)
         {
+            tour.Name = tour.Name.Trim();
+            tour.Description = tour.Description.Trim();
+            tour.To = tour.To.Trim();
+            tour.From = tour.From.Trim();
+
+            if (tour.Name == String.Empty || tour.Description == String.Empty || tour.To == String.Empty || tour.From == String.Empty)
+                return false;
+
             var metaData = await MapQuestService.GetRouteMetaData(tour.From, tour.To, tour.TransportType);
 
             if (metaData == null) return false;
@@ -41,7 +49,7 @@ namespace TourPlanner.BL
             tour.Distance = metaData?.Distance ?? Double.NegativeInfinity;
             tour.EstimatedTime = metaData?.FormattedTime ?? TimeSpan.Zero;
 
-            await GetRouteImage(tour);
+            _ = GetRouteImage(tour);
 
             return tourRepository.Update(tour);
         }

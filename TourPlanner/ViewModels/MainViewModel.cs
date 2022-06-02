@@ -125,10 +125,15 @@ namespace TourPlanner.ViewModels
 
         public async void SaveTour(TourDto tour)
         {
-            await TourController.UpdateItem(tour);
-            LoadTours();
-            LoadTourDetails(tour.Id);
-            toursViewModel.SelectTourWithoutEvent(tour.Id);
+            if (await TourController.UpdateItem(tour))
+            {
+                MessageBox.Show("Tour saved.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadTours();
+                LoadTourDetails(tour.Id);
+                toursViewModel.SelectTourWithoutEvent(tour.Id);
+            }
+            else
+                MessageBox.Show("Saving tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void ExportData()
