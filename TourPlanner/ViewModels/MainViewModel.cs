@@ -53,6 +53,10 @@ namespace TourPlanner.ViewModels
             tourDetailsViewModel.DeleteEvent += (_, tour) => this.RemoveTour(tour);
             tourDetailsViewModel.ExportAsPdfEvent += (_, tour) => this.ExportTourAsPdf(this.toursViewModel.SelectedTour, this.tourLogsViewModel.TourLogs.ToList());
 
+            tourLogsViewModel.AddEvent += (_, e) => this.AddTourLog();
+            tourLogsViewModel.DeleteEvent += (_, tourLog) => this.DeleteTourLog(tourLog);
+            tourLogsViewModel.EditEvent += (_, tourLog) => this.EditTourLog(tourLog);
+
             this.LoadTours();
         }
         public void LoadTours(string filter = null)
@@ -139,6 +143,21 @@ namespace TourPlanner.ViewModels
             }
             else
                 MessageBox.Show("Saving tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void AddTourLog()
+        {
+
+        }
+
+        public void DeleteTourLog(TourLogDto tourLog)
+        {
+
+        }
+
+        public void EditTourLog(TourLogDto tourLog)
+        {
+
         }
 
         public void ExportData()

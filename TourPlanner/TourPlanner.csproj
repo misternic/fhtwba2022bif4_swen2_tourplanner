@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\close-box.png" />
-    <Resource Include="Images\magnify.png" />
-    <Resource Include="Images\pencil.png" />
-    <Resource Include="Images\plus-box.png" />
     <Resource Include="Images\tour-detail_default.png" />
   </ItemGroup>
 
