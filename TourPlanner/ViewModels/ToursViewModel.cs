@@ -82,7 +82,7 @@ namespace TourPlanner.ViewModels
         }
         public void SelectTourWithoutEvent(Guid id)
         {
-            _selectedTour = Tours.Where(t => t.Id == id).Single();
+            _selectedTour = Tours.Where(t => t.Id == id).SingleOrDefault();
             OnPropertyChanged(nameof(SelectedTour));
         }
     }

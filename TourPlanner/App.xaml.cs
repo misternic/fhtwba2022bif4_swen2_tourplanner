@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TourPlanner.BL;
 using TourPlanner.DAL;
 using TourPlanner.ViewModels;
 
@@ -20,21 +21,25 @@ namespace TourPlanner
             var context = DbContext.GetInstance();
             context.Init();
 
-            var menuVM = new MenuViewModel();
-            var searchVM = new SearchViewModel();
-            var toursVM = new ToursViewModel();
-            var tourDetailsVM = new TourDetailsViewModel();
-            var tourLogsVM = new TourLogsViewModel();
+            var menuViewModel = new MenuViewModel();
+            var searchViewModel = new SearchViewModel();
+            var toursViewModel = new ToursViewModel();
+            var tourDetailsViewModel = new TourDetailsViewModel();
+            var tourLogsViewModel = new TourLogsViewModel();
+
+            var tourController = new TourController();
+            var tourLogController = new TourLogController();
+
 
             var wnd = new MainWindow()
             {
-                DataContext = new MainViewModel(menuVM, searchVM, toursVM, tourDetailsVM, tourLogsVM),
+                DataContext = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourController, tourLogController),
 
-                Menu = { DataContext = menuVM },
-                Search = { DataContext = searchVM },
-                Tours = { DataContext = toursVM },
-                TourDetails = { DataContext = tourDetailsVM },
-                TourLogs = { DataContext = tourLogsVM }
+                Menu = { DataContext = menuViewModel },
+                Search = { DataContext = searchViewModel },
+                Tours = { DataContext = toursViewModel },
+                TourDetails = { DataContext = tourDetailsViewModel },
+                TourLogs = { DataContext = tourLogsViewModel }
             };
 
             wnd.Show();
