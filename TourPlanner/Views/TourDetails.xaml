@@ -78,7 +78,7 @@
                 </DockPanel>
                 <DockPanel>
                     <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Created" />
-                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Created, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" VerticalContentAlignment="Center" />
+                    <TextBox Margin="5,5,5,5" Text="{Binding Tour.Created, ConverterCulture='de-DE', UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" VerticalContentAlignment="Center" />
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

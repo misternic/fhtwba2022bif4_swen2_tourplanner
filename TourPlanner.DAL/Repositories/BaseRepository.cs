@@ -19,7 +19,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         throw new NotImplementedException();
     }
 
-    public virtual T GetById(Guid id)
+    public virtual T? GetById(Guid id)
     {
         throw new NotImplementedException();
     }

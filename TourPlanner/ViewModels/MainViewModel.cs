@@ -27,7 +27,9 @@ namespace TourPlanner.ViewModels
         private ITourController tourController;
         private ITourLogController tourLogController;
 
-        public MainViewModel(MenuViewModel menuViewModel, SearchViewModel searchViewModel, ToursViewModel toursViewModel, TourDetailsViewModel tourDetailsViewModel, TourLogsViewModel tourLogsViewModel, ITourController tourController, ITourLogController tourLogController)
+        public ISnackbarMessageQueue MessageQueue { get; }
+
+        public MainViewModel(MenuViewModel menuViewModel, SearchViewModel searchViewModel, ToursViewModel toursViewModel, TourDetailsViewModel tourDetailsViewModel, TourLogsViewModel tourLogsViewModel, ITourController tourController, ITourLogController tourLogController, ISnackbarMessageQueue messageQueue)
         {
             this.menuViewModel = menuViewModel;
             this.searchViewModel = searchViewModel;
@@ -37,6 +39,8 @@ namespace TourPlanner.ViewModels
 
             this.tourController = tourController;
             this.tourLogController = tourLogController;
+
+            MessageQueue = messageQueue;
 
             this.SetupUI();
         }
@@ -65,7 +69,7 @@ namespace TourPlanner.ViewModels
 
             tourLogsViewModel.AddEvent += (_, e) => this.AddTourLog();
             tourLogsViewModel.DeleteEvent += (_, tourLog) => this.DeleteTourLog(tourLog);
-            tourLogsViewModel.EditEvent += (_, tourLog) => this.EditTourLog(tourLog);
+            tourLogsViewModel.EditEvent += (_, tourLog) => this.EditTourLog(tourLog.Id);
 
             this.LoadTours();
         }
@@ -94,13 +98,6 @@ namespace TourPlanner.ViewModels
             var tour = tourController.GetById(id);
             tourDetailsViewModel.Tour = tour;
             tourDetailsViewModel.Visibility = Visibility.Visible;
-        }
-
-        public void LoadTourLogs(Guid id)
-        {
-            var tourLogs = tourLogController.GetLogsOfTour(id);
-            tourLogsViewModel.LoadTourLogs(tourLogs);
-            tourLogsViewModel.Visibility = Visibility.Visible;
         }
 
         public void TourDeselected()
@@ -145,31 +142,58 @@ namespace TourPlanner.ViewModels
         {
             if (await tourController.UpdateItem(tour))
             {
-                MessageBox.Show("Tour saved.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageQueue.Enqueue("Tour saved.");
                 LoadTours();
                 LoadTourDetails(tour.Id);
                 toursViewModel.SelectTourWithoutEvent(tour.Id);
             }
             else
-                MessageBox.Show("Saving tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageQueue.Enqueue("Saving tour failed!");
         }
+
+        /***************************/
+        /******** TOUR LOGS ********/
+        /***************************/
 
         public async void AddTourLog()
         {
-            Guid newId = Guid.NewGuid();
-
             TourLogDto newTourLog = new TourLogDto()
             {
-                Id = newId,
+                Id = Guid.NewGuid(),
                 TourId = toursViewModel.SelectedTour.Id,
-                Date = new DateOnly(2022, 06, 02),
-                Difficulty = Common.Difficulty.Medium,
-                Comment = "Test"
+                Date = DateOnly.FromDateTime(DateTime.Now)
             };
 
-            await tourLogController.AddTourLogAsync(newTourLog);
-            LoadTourDetails(toursViewModel.SelectedTour.Id);
-            LoadTourLogs(toursViewModel.SelectedTour.Id);
+            await ShowTourLogDialog(newTourLog);
+        }
+
+        public void LoadTourLogs(Guid id)
+        {
+            var tourLogs = tourLogController.GetLogsOfTour(id);
+            tourLogsViewModel.LoadTourLogs(tourLogs);
+            tourLogsViewModel.Visibility = Visibility.Visible;
+        }
+
+        public async void EditTourLog(Guid id)
+        {
+            var tourLog = tourLogController.GetById(id);
+            await ShowTourLogDialog(tourLog);
+        }
+
+        public async Task ShowTourLogDialog(TourLogDto tourLog)
+        {
+            object dialogResult = await DialogHost.Show(tourLog, "TourLogDialog");
+
+            if (dialogResult is bool boolResult && boolResult)
+            {
+                if (await tourLogController.Save(tourLog))
+                    MessageQueue.Enqueue("Tour Log saved.");
+                else
+                    MessageQueue.Enqueue("Saving tour log failed");
+
+                LoadTourDetails(toursViewModel.SelectedTour.Id);
+                LoadTourLogs(toursViewModel.SelectedTour.Id);
+            }
         }
 
         public void DeleteTourLog(TourLogDto tourLog)
@@ -179,10 +203,9 @@ namespace TourPlanner.ViewModels
             LoadTourLogs(toursViewModel.SelectedTour.Id);
         }
 
-        public async void EditTourLog(TourLogDto tourLog)
-        {
-            await DialogHost.Show(tourLog, "TourLogDialog");
-        }
+        /***************************/
+        /***** EXPORT / IMPORT *****/
+        /***************************/
 
         public void ExportData()
         {
@@ -201,9 +224,9 @@ namespace TourPlanner.ViewModels
                 logger.Info($"Filepath: {dialog.FileName}");
 
                 if (tourController.ExportData(dialog.FileName))
-                    MessageBox.Show("Export of data succeeded.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageQueue.Enqueue("Export of data succeeded.");
                 else
-                    MessageBox.Show("Export of data failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageQueue.Enqueue("Export of data failed.");
             }
         }
 
@@ -222,9 +245,9 @@ namespace TourPlanner.ViewModels
                 logger.Info($"Filepath: {dialog.FileName}");
 
                 if (tourController.ImportData(dialog.FileName))
-                    MessageBox.Show("Import of data succeeded.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageQueue.Enqueue("Import of data succeeded.");
                 else
-                    MessageBox.Show("Import of data failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageQueue.Enqueue("Import of data failed.");
             }
         }
 
@@ -244,9 +267,9 @@ namespace TourPlanner.ViewModels
                 logger.Info($"Save as {dialog.FileName}");
 
                 if (tourController.ExportTourAsPdf(dialog.FileName, tour, logs))
-                    MessageBox.Show("Export of tour succeeded.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageQueue.Enqueue("Export of tour succeeded.");
                 else
-                    MessageBox.Show("Export of tour failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageQueue.Enqueue("Export of tour failed.");
             }
         }
 
@@ -266,9 +289,9 @@ namespace TourPlanner.ViewModels
                 logger.Info($"Save as {dialog.FileName}");
 
                 if (tourController.ExportSummaryAsPdf(dialog.FileName))
-                    MessageBox.Show("Export of summary succeeded.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageQueue.Enqueue("Export of summary succeeded.");
                 else
-                    MessageBox.Show("Export of summary failed.", "TourPlanner", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageQueue.Enqueue("Export of tour failed.");
             }
         }
     }

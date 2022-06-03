@@ -1,3 +1,4 @@
+using MaterialDesignThemes.Wpf;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -19,6 +20,8 @@ public class MainViewModelTests
     private Mock<ITourController> tourControllerMock;
     private Mock<ITourLogController> tourLogControllerMock;
 
+    private MainViewModel mainViewModel;
+
     private TourDto tour1 = new TourDto()
     {
         Id = Guid.NewGuid(),
@@ -39,13 +42,14 @@ public class MainViewModelTests
 
         tourControllerMock = new Mock<ITourController>();
         tourLogControllerMock = new Mock<ITourLogController>();
+
+        mainViewModel = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourControllerMock.Object, tourLogControllerMock.Object, (new Mock<ISnackbarMessageQueue>()).Object);
     }
 
     [Test]
     public void TestMainViewModel_ShouldHaveZeroEntriesOnStartup()
     {
         // arrange
-        var mainViewModel = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourControllerMock.Object, tourLogControllerMock.Object);
         int expectedCount = 0;
 
         // act
@@ -58,8 +62,9 @@ public class MainViewModelTests
     [Test]
     public void TestMainViewModel_ConstructorOfMainViewModelShouldLoadAllToursFromTourController()
     {
-        // arrange & act
-        var mainViewModel = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourControllerMock.Object, tourLogControllerMock.Object);
+        // arrange: MainViewModel already initialized in SetUp
+
+        // act: MainViewModel Constructor
 
         // assert
         tourControllerMock.Verify(mock => mock.GetItems(It.IsAny<string>()), Times.Once());
@@ -69,7 +74,6 @@ public class MainViewModelTests
     public void TestTestMainViewModel_CountOfToursShouldBeOneHigherAfterAddingOne()
     {
         // arrange
-        var mainViewModel = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourControllerMock.Object, tourLogControllerMock.Object);
         tourControllerMock.Setup(c => c.GetItems(It.IsAny<string>())).Returns(() => new List<TourDto> { tour1 });
         int lastCount = toursViewModel.Tours.Count;
 
@@ -84,8 +88,7 @@ public class MainViewModelTests
     [Test]
     public void TestMainViewModel_TourControllerShouldCalledAddItemAfterAddingOne()
     {
-        // arrange
-        var mainViewModel = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourControllerMock.Object, tourLogControllerMock.Object);
+        // arrange: MainViewModel already initialized in SetUp
 
         // act
         int lastCount = toursViewModel.Tours.Count;

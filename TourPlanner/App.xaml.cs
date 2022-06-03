@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -30,10 +31,11 @@ namespace TourPlanner
             var tourController = new TourController();
             var tourLogController = new TourLogController();
 
+            var messageQueue = new SnackbarMessageQueue();
 
             var wnd = new MainWindow()
             {
-                DataContext = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourController, tourLogController),
+                DataContext = new MainViewModel(menuViewModel, searchViewModel, toursViewModel, tourDetailsViewModel, tourLogsViewModel, tourController, tourLogController, messageQueue),
 
                 Menu = { DataContext = menuViewModel },
                 Search = { DataContext = searchViewModel },

@@ -4,9 +4,11 @@ namespace TourPlanner.BL
 {
     public interface ITourLogController
     {
-        Task<bool> AddTourLogAsync(TourLogDto tourLog);
-        bool DeleteTourLog(TourLogDto tourLog);
+        Task<bool> Save(TourLogDto tourLog);
+        Task<bool> AddTourLog(TourLogDto tourLog);
+        TourLogDto GetById(Guid id);
         IEnumerable<TourLogDto> GetLogsOfTour(Guid id);
-        bool UpdateTourLog(TourLogDto tourLog);
+        Task<bool> UpdateTourLog(TourLogDto tourLog);
+        bool DeleteTourLog(TourLogDto tourLog);
     }
 }

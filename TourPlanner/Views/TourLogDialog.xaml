@@ -4,15 +4,54 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TourPlanner.Views"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=netstandard" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:common="clr-namespace:TourPlanner.Common;assembly=TourPlanner.Common"
+             xmlns:src="clr-namespace:TourPlanner.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <src:DateConverter x:Key="dateConverter" />
+
+        <ObjectDataProvider x:Key="DifficultyProvider" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="common:Difficulty"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
     <materialDesign:DialogHost Identifier="TourLogDialog" CloseOnClickAway="True">
         <materialDesign:DialogHost.DialogContentTemplate>
             <DataTemplate>
                 <StackPanel Margin="20">
-                    <TextBlock Text="{Binding Temperature}" />
-                    <TextBlock Text="{Binding Comment}" />
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Date" />
+                        <DatePicker Margin="5,5,5,5" SelectedDate="{Binding Date, Converter={StaticResource dateConverter}, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Pick Date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Duration" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Duration, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Rating" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Rating, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Difficulty" />
+                        <ComboBox Margin="5,5,5,5" SelectedItem="{Binding Difficulty, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource DifficultyProvider}}" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Comment" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Width="280" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True" Height="80" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Temperature" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Temperature, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Created" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Created, ConverterCulture='de-DE', UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" VerticalContentAlignment="Center" />
+                    </DockPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
                         <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True"
                         Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">

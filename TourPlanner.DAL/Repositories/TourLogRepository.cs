@@ -28,12 +28,19 @@ public sealed class TourLogRepository : BaseRepository<TourLogDto>
         };
     }
     
-    public override TourLogDto GetById(Guid id)
+    public override TourLogDto? GetById(Guid id)
     {
         var cmd = new NpgsqlCommand($"SELECT {Fields} FROM logs WHERE id=@id", Context.Connection, Context.Transaction);
         cmd.Parameters.AddWithValue("id", id);
 
         var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
+
+        if (!reader.HasRows)
+        {
+            reader.Close();
+            return null;
+        }
+
         reader.Read();
         
         var log = ReadAsTourLog(reader);

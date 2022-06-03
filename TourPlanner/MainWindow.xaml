@@ -42,5 +42,6 @@
         </Grid>
         <Views:TourLogDialog x:Name="TourLogDialog" />
         <Views:YesNoDialog x:Name="YesNoDialog" />
+        <materialDesign:Snackbar MessageQueue="{Binding MessageQueue}" />
     </Grid>
 </Window>

@@ -30,7 +30,7 @@
         </WrapPanel>
         <DataGrid ItemsSource="{Binding TourLogs}" SelectedItem="{Binding SelectedTourLog, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Date" Binding="{Binding Date}" />
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, ConverterCulture='de-DE'}" />
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />
                 <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
                 <DataGridComboBoxColumn Header="Difficulty"

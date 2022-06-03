@@ -30,7 +30,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
         };
     }
 
-    public override TourDto GetById(Guid id)
+    public override TourDto? GetById(Guid id)
     {
         const string logsCount = "SELECT COUNT(*) FROM logs WHERE tour_id=@id";
         const string avgDifficulty = "SELECT AVG(difficulty) FROM logs WHERE tour_id=@id";
@@ -42,6 +42,13 @@ public sealed class TourRepository : BaseRepository<TourDto>
         cmd.Parameters.AddWithValue("id", id);
 
         var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
+
+        if (!reader.HasRows)
+        {
+            reader.Close();
+            return null;
+        }
+        
         reader.Read();
 
         var tour = ReadAsTour(reader);
