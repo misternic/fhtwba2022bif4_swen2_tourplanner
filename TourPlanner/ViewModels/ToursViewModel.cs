@@ -78,7 +78,7 @@ namespace TourPlanner.ViewModels
 
         public void SelectTour(Guid id)
         {
-            SelectedTour = Tours.Where(t => t.Id == id).Single();
+            SelectedTour = Tours.Where(t => t.Id == id).SingleOrDefault();
         }
         public void SelectTourWithoutEvent(Guid id)
         {

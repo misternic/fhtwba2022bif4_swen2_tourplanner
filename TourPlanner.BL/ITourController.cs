@@ -5,10 +5,11 @@ namespace TourPlanner.BL
     public interface ITourController
     {
         bool AddItem(TourDto tourDto);
-        bool ExportData(string path);
+        Task<bool> ExportData(string path);
         bool ExportSummaryAsPdf(string path);
         bool ExportTourAsPdf(string path, TourDto tour, List<TourLogDto> logs);
         TourDto GetById(Guid id);
+        IEnumerable<TourLogDto> GetLogsOfTour(Guid id);
         IEnumerable<TourDto> GetItems(string filter);
         Task<bool> GetRouteImage(TourDto tour);
         bool ImportData(string path);

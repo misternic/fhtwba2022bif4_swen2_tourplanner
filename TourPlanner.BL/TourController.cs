@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using TourPlanner.Common.DTO;
 using TourPlanner.Common.Logging;
 using TourPlanner.Common.PDF;
@@ -12,8 +13,16 @@ namespace TourPlanner.BL
     {
         protected static ILoggerWrapper logger = LoggerFactory.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static readonly TourRepository tourRepository = new TourRepository(DbContext.GetInstance());
-        static readonly TourLogRepository tourLogRepository = new TourLogRepository(DbContext.GetInstance());
+        private readonly ITourRepository tourRepository;
+        private readonly IRepository<TourLogDto> tourLogRepository;
+
+        public TourController() : this(new TourRepository(DbContext.GetInstance()), new TourLogRepository(DbContext.GetInstance())) { }
+
+        public TourController(ITourRepository tourRepository, IRepository<TourLogDto> tourLogRepository)
+        {
+            this.tourRepository = tourRepository;
+            this.tourLogRepository = tourLogRepository;
+        }
 
         public IEnumerable<TourDto> GetItems(string filter)
         {
@@ -70,16 +79,45 @@ namespace TourPlanner.BL
             return await MapQuestService.GetRouteImage(tour.Id.ToString(), tour.From, tour.To);
         }
 
-        public bool ExportData(string path)
+        public async Task<bool> ExportData(string path)
         {
-            // TODO: get data from database, serialize, and write to file
+            var data = new ExportDto()
+            {
+                Tours = tourRepository.Get(),
+                Logs = tourLogRepository.Get()
+            };
+
+            try
+            {
+                await File.WriteAllTextAsync(path, data.ToJson());
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
             return true;
         }
 
         public bool ImportData(string path)
         {
-            // TODO: get json from file, deserialize and send to database
-            return true;
+            logger.Info($"Start import data from {path}...");
+            var data = JsonConvert.DeserializeObject<ExportDto>(File.ReadAllText(path));
+
+            if (data != null && data.Tours != null)
+            {
+                tourRepository.Get().ToList().ForEach(t => tourRepository.Delete(t.Id));
+                tourLogRepository.Get().ToList().ForEach(l => tourLogRepository.Delete(l.Id));
+
+                data.Tours.ToList().ForEach(t => tourRepository.Insert(t));
+                data.Logs.ToList().ForEach(l => tourLogRepository.Insert(l));
+
+                return true;
+            }
+
+            logger.Info($"Import failed because schema of json file isn't suitable.");
+
+            return false;
         }
 
         public bool ExportTourAsPdf(string path, TourDto tour, List<TourLogDto> logs)

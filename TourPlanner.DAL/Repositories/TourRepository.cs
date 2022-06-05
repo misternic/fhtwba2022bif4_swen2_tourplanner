@@ -5,7 +5,7 @@ using TourPlanner.Common.DTO;
 
 namespace TourPlanner.DAL.Repositories;
 
-public sealed class TourRepository : BaseRepository<TourDto>
+public sealed class TourRepository : BaseRepository<TourDto>, ITourRepository
 {
     public TourRepository(DbContext context) : base(context)
     {
@@ -23,7 +23,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
             Description = reader.GetString(2),
             From = reader.GetString(3),
             To = reader.GetString(4),
-            TransportType = (TransportType) reader.GetInt32(5),
+            TransportType = (TransportType)reader.GetInt32(5),
             Distance = reader.GetDouble(6),
             EstimatedTime = new TimeSpan(0, 0, reader.GetInt32(7)),
             Created = reader.GetDateTime(8)
@@ -48,7 +48,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
             reader.Close();
             return null;
         }
-        
+
         reader.Read();
 
         var tour = ReadAsTour(reader);
@@ -86,7 +86,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
             Context.Connection, Context.Transaction);
 
         var summaries = new List<TourSummaryDto>();
-        
+
         var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
@@ -96,7 +96,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
                 Name = reader.GetString(1),
                 AvgDifficulty = reader.GetFloat(2),
                 AvgRating = reader.GetFloat(3),
-                AvgDuration = new TimeSpan(0, 0, (int) reader.GetFloat(4))
+                AvgDuration = new TimeSpan(0, 0, (int)reader.GetFloat(4))
             });
         }
 
@@ -116,7 +116,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
         cmd.Parameters.AddWithValue("description", tourDto.Description);
         cmd.Parameters.AddWithValue("from", tourDto.From);
         cmd.Parameters.AddWithValue("to", tourDto.To);
-        cmd.Parameters.AddWithValue("transport_type", (int) tourDto.TransportType);
+        cmd.Parameters.AddWithValue("transport_type", (int)tourDto.TransportType);
         cmd.Parameters.AddWithValue("distance", tourDto.Distance);
         cmd.Parameters.AddWithValue("estimated_duration", tourDto.EstimatedTime.TotalSeconds);
         cmd.Parameters.AddWithValue("created", tourDto.Created);
@@ -141,7 +141,7 @@ public sealed class TourRepository : BaseRepository<TourDto>
         cmd.Parameters.AddWithValue("description", tourDto.Description);
         cmd.Parameters.AddWithValue("from", tourDto.From);
         cmd.Parameters.AddWithValue("to", tourDto.To);
-        cmd.Parameters.AddWithValue("transport_type", (int) tourDto.TransportType);
+        cmd.Parameters.AddWithValue("transport_type", (int)tourDto.TransportType);
         cmd.Parameters.AddWithValue("distance", tourDto.Distance);
         cmd.Parameters.AddWithValue("estimated_duration", tourDto.EstimatedTime.TotalSeconds);
         cmd.Parameters.AddWithValue("created", tourDto.Created);

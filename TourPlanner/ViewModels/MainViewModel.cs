@@ -161,7 +161,9 @@ namespace TourPlanner.ViewModels
             {
                 Id = Guid.NewGuid(),
                 TourId = toursViewModel.SelectedTour.Id,
-                Date = DateOnly.FromDateTime(DateTime.Now)
+                Date = DateOnly.FromDateTime(DateTime.Now),
+                Rating = 1,
+                Difficulty = Common.Difficulty.Easy
             };
 
             await ShowTourLogDialog(newTourLog);
@@ -207,7 +209,7 @@ namespace TourPlanner.ViewModels
         /***** EXPORT / IMPORT *****/
         /***************************/
 
-        public void ExportData()
+        public async void ExportData()
         {
             logger.Info($"Export data in the database...");
 
@@ -223,7 +225,7 @@ namespace TourPlanner.ViewModels
             {
                 logger.Info($"Filepath: {dialog.FileName}");
 
-                if (tourController.ExportData(dialog.FileName))
+                if (await tourController.ExportData(dialog.FileName))
                     MessageQueue.Enqueue("Export of data succeeded.");
                 else
                     MessageQueue.Enqueue("Export of data failed.");
@@ -245,7 +247,10 @@ namespace TourPlanner.ViewModels
                 logger.Info($"Filepath: {dialog.FileName}");
 
                 if (tourController.ImportData(dialog.FileName))
+                {
                     MessageQueue.Enqueue("Import of data succeeded.");
+                    LoadTours();
+                }
                 else
                     MessageQueue.Enqueue("Import of data failed.");
             }

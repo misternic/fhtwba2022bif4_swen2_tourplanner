@@ -12,12 +12,20 @@ namespace TourPlanner.BL
 {
     public class TourLogController : ITourLogController
     {
-        static readonly BaseRepository<TourDto> tourRepository = new TourRepository(DbContext.GetInstance());
-        static readonly BaseRepository<TourLogDto> tourLogRepository = new TourLogRepository(DbContext.GetInstance());
+        private readonly ITourRepository tourRepository;
+        private readonly IRepository<TourLogDto> tourLogRepository;
+
+        public TourLogController() : this(new TourRepository(DbContext.GetInstance()), new TourLogRepository(DbContext.GetInstance())) { }
+
+        public TourLogController(ITourRepository tourRepository, IRepository<TourLogDto> tourLogRepository)
+        {
+            this.tourRepository = tourRepository;
+            this.tourLogRepository = tourLogRepository;
+        }
 
         public async Task<bool> Save(TourLogDto tourLog)
         {
-            if (tourLog.Date == null || tourLog.Duration == null || tourLog.Difficulty == null) return false;
+            if (tourLog == null || tourLog.Date == null || tourLog.Duration == null || tourLog.Difficulty == null) return false;
 
             var tour = tourRepository.GetById(tourLog.TourId);
 
@@ -34,25 +42,6 @@ namespace TourPlanner.BL
         public IEnumerable<TourLogDto> GetLogsOfTour(Guid id)
         {
             return tourLogRepository.Get().Where(l => l.TourId == id);
-        }
-
-        public async Task<bool> AddTourLog(TourLogDto tourLog)
-        {
-            var tour = tourRepository.GetById(tourLog.TourId);
-
-            if (!String.IsNullOrWhiteSpace(tour.To))
-                tourLog.Temperature = await WeatherApiService.GetTemperatureAtDateAsync(tour.To, tourLog.Date);
-
-            return tourLogRepository.Insert(tourLog);
-        }
-        public async Task<bool> UpdateTourLog(TourLogDto tourLog)
-        {
-            var tour = tourRepository.GetById(tourLog.TourId);
-
-            if (!String.IsNullOrWhiteSpace(tour.To))
-                tourLog.Temperature = await WeatherApiService.GetTemperatureAtDateAsync(tour.To, tourLog.Date);
-
-            return tourLogRepository.Update(tourLog);
         }
 
         public bool DeleteTourLog(TourLogDto tourLog)

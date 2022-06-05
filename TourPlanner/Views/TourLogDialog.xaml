@@ -34,7 +34,18 @@
                     </DockPanel>
                     <DockPanel>
                         <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Rating" />
-                        <TextBox Margin="5,5,5,5" Text="{Binding Rating, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+
+                        <ComboBox Margin="5,5,5,5" SelectedItem="{Binding Rating, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type System:Int32}">
+                                    <System:Int32>1</System:Int32>
+                                    <System:Int32>2</System:Int32>
+                                    <System:Int32>3</System:Int32>
+                                    <System:Int32>4</System:Int32>
+                                    <System:Int32>5</System:Int32>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
                     </DockPanel>
                     <DockPanel>
                         <Label Margin="5,5,5,5" Width="150" VerticalAlignment="Center" Content="Difficulty" />
